@@ -7,7 +7,7 @@ GITHUB_REF="${GITHUB_REF:-none}"
 
 cd dockerfiles
 for DOCKERFILE in *; do
-    DOCKERFILE_NAME="$(basename $DOCKERFILE)"
+    DOCKERFILE_NAME=$(basename "$DOCKERFILE")
     DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY/$DOCKERFILE_NAME}"
 
     DOCKER_BUILD_CMD=(docker buildx build --load -f Dockerfile \
