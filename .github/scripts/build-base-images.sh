@@ -13,7 +13,7 @@ for DOCKERFILE in *; do
     DOCKERFILE_NAME=$(basename "$DOCKERFILE")
     DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY/$DOCKERFILE_NAME}"
 
-    DOCKER_BUILD_CMD=(docker buildx build \
+    DOCKER_BUILD_CMD=(docker buildx build --load \
     --build-arg PIP_VERSION="$PIP_VERSION" \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     --progress plain \
