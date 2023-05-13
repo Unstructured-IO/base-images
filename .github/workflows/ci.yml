@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  setup:
+  build:
     strategy:
       matrix:
         docker-platform: ["linux/arm64", "linux/amd64"]
