@@ -4,7 +4,7 @@ set -euo pipefail
 DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-quay.io/unstructured-io}"
 PIP_VERSION="${PIP_VERSION:-22.2.1}"
 GITHUB_REF="${GITHUB_REF:-none}"
-DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64,linux/arm64}"
+DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
 
 cd dockerfiles
 
