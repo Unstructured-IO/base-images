@@ -3,7 +3,8 @@ FROM centos:centos7.9.2009
 
 # Install dependency packages
 # Install gcc & g++ ≥ 8 for Tesseract and Detectron2
-RUN yum -y update && \
+RUN yum upgrade && \
+    yum -y update && \
     yum -y install poppler-utils xz-devel wget tar curl make which mailcap && \
     yum install -y epel-release && \
     yum -y install centos-release-scl && \
