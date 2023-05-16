@@ -17,7 +17,7 @@ for DOCKERFILE in *; do
     --build-arg PIP_VERSION="$PIP_VERSION" \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     --progress plain \
-    --cache-from "$DOCKER_REPOSITORY":latest \
+    --cache-from "$DOCKER_IMAGE" \
     -t "$DOCKER_IMAGE" -f "$DOCKERFILE_NAME" .)
 
     # only build for specific platform if DOCKER_PLATFORM is set
