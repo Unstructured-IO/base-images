@@ -43,10 +43,6 @@ RUN set -ex && \
     $sudo rm -rf /tmp/* && \
     yum clean all
 
-ENV PATH="/usr/local/ssl/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/usr/local/ssl/lib:$LD_LIBRARY_PATH"
-ENV SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt
-
 # SSL dependency gets baked into Python binary so do this first
 RUN yum -y update && \
   yum install -y perl-core pcre-devel && \
@@ -61,12 +57,18 @@ RUN yum -y update && \
   $sudo yum -y remove perl-core pcre-devel && \
   yum clean all
 
+ENV PATH="/usr/local/ssl/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/ssl/lib:$LD_LIBRARY_PATH"
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt
+
 # Install Python
-RUN yum -y install openssl-devel bzip2-devel libffi-devel make git sqlite-devel && \
-    curl -O https://www.python.org/ftp/python/3.8.15/Python-3.8.15.tgz && tar -xzf Python-3.8.15.tgz && \
-    cd Python-3.8.15/ && ./configure --enable-optimizations && make altinstall && \
-    cd .. && rm -rf Python-3.8.15* && \
-    ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
-    $sudo yum -y remove openssl-devel bzip2-devel libffi-devel make sqlite-devel && \
-    $sudo rm -rf /var/cache/yum/* && \
-    yum clean all
+RUN yum -y install bzip2-devel libffi-devel make git sqlite-devel && \
+  curl -O https://www.python.org/ftp/python/3.8.15/Python-3.8.15.tgz && tar -xzf Python-3.8.15.tgz && \
+  cd Python-3.8.15/ && \
+  ./configure --enable-optimizations --with-openssl=/usr/local/ssl && \
+  make altinstall && \
+  cd .. && rm -rf Python-3.8.15* && \
+  ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
+  $sudo yum -y remove bzip2-devel libffi-devel make sqlite-devel && \
+  $sudo rm -rf /var/cache/yum/* && \
+  yum clean all
