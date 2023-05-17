@@ -13,7 +13,12 @@ for DOCKERFILE in *; do
     DOCKERFILE_NAME=$(basename "$DOCKERFILE")
     DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY/$DOCKERFILE_NAME}"
 
-    DOCKER_BUILD_CMD=(docker buildx build --load \
+    BUILDX_COMMAND="docker buildx build"
+    if [ "$GITHUB_REF" == "refs/heads/main" ]; then
+        BUILDX_COMMAND="docker buildx build --push"
+    fi
+
+    DOCKER_BUILD_CMD=($BUILDX_COMMAND \
     --build-arg PIP_VERSION="$PIP_VERSION" \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     --progress plain \
