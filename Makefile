@@ -7,4 +7,4 @@ help: Makefile
 
 .PHONY: build-base-images
 build-base-images:
-	@ export DOCKER_PLATFORM=$(DOCKER_PLATFORM) && $(PROJECT_DIR)/.github/scripts/build-base-images.sh
+	DOCKER_PLATFORM=$(DOCKER_PLATFORM) $(PROJECT_DIR)/.github/scripts/build-base-images.sh

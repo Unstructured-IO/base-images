@@ -6,19 +6,18 @@ FROM centos:centos7.9.2009
 RUN yum -y update && \
     yum -y upgrade && \
     yum -y install poppler-utils xz-devel wget tar curl make which mailcap && \
-    yum install -y epel-release && \
+    yum -y install epel-release && \
     yum -y install centos-release-scl && \
     yum -y install devtoolset-9-gcc* && \
-    yum install -y pandoc && \
-    yum install -y libreoffice && \
+    yum -y install pandoc && \
+    yum -y install libreoffice && \
     yum clean all
 
 SHELL [ "/usr/bin/scl", "enable", "devtoolset-9"]
 
 # Install Tessaract
 RUN set -ex && \
-    $sudo yum install -y opencv opencv-devel opencv-python perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-turbo-devel git-core libtool pkgconfig xz \
-    libicu-dev libpango1.0-dev libcairo2-dev && \
+    $sudo yum install -y opencv opencv-devel opencv-python perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-turbo-devel git-core libtool pkgconfig xz && \
     wget https://github.com/DanBloomberg/leptonica/releases/download/1.75.1/leptonica-1.75.1.tar.gz && \
     tar -xzvf leptonica-1.75.1.tar.gz && \
     cd leptonica-1.75.1 || exit && \
@@ -45,7 +44,7 @@ RUN set -ex && \
 
 # SSL dependency gets baked into Python binary so do this first
 RUN yum -y update && \
-  yum install -y perl-core pcre-devel && \
+  yum -y install perl-core pcre-devel && \
   wget https://ftp.openssl.org/source/openssl-1.1.1k.tar.gz && \
   tar -xzvf openssl-1.1.1k.tar.gz && \
   cd openssl-1.1.1k && \
