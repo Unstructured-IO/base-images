@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:experimental
+FROM alpine:3.18.0
+
+RUN apk update && apk -s upgrade && \
+    apk add --no-cache poppler xz wget tar curl make which mailcap \
+    opencv perl clang libpng tiff pandoc libreoffice \
+    libwebp libjpeg-turbo git libtool pkgconfig xz \
+    icu pango cairo gcc glib musl g++ zlib-dev automake autoconf && \
+    wget https://github.com/DanBloomberg/leptonica/releases/download/1.75.1/leptonica-1.75.1.tar.gz && \
+    tar -xzvf leptonica-1.75.1.tar.gz && \
+    cd leptonica-1.75.1 || exit && \
+    ./configure && make && $sudo make install && \
+    cd .. && \
+    wget http://mirror.squ.edu.om/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz && \
+    tar -xvf autoconf-archive-2017.09.28.tar.xz && \
+    cd autoconf-archive-2017.09.28 || exit && \
+    ./configure && make && make install && \
+    cp m4/* /usr/share/aclocal && \
+    cd .. && \
+    git clone --depth 1  https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
+    cd tesseract-ocr || exit && \
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
+    ./autogen.sh && ./configure && make && make install && \
+    cd .. && \
+    git clone https://github.com/tesseract-ocr/tessdata.git  && \
+    cp tessdata/*.traineddata /usr/local/share/tessdata && \
+    rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.75.1* && \
+    apk del opencv perl clang libpng tiff libwebp libjpeg-turbo git libtool pkgconfig xz \
+    automake autoconf zlib-dev gcc glib musl g++
+
