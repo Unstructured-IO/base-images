@@ -9,10 +9,9 @@ RUN dnf -y update && \
     dnf config-manager --set-enabled powertools && \
     # Needed for LibreOffice to install base components on aarch64
     sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/Rocky-Devel.repo && \
-    wget https://github.com/jgm/pandoc/archive/refs/tags/1.12.4.2.tar.gz && \
-    tar -xzvf 1.12.4.2.tar.gz && cd pandoc-1.12.4.2 && \
-    ./configure && make && make install && \
-    cd .. && rm -rf pandoc-* 1.12.4.2.tar.gz && \
+    ARCH=$(uname -m) && if [ "$ARCH" == "aarch64" ]; then ARCH="arm64"; fi && \
+    wget https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-linux-$ARCH.tar.gz && \
+    tar xvzf pandoc-3.1.2-linux-arm64.tar.gz --strip-components 1 -C '/usr/local' && \
     dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core && \
     sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/Rocky-Devel.repo && \
     rm -rf /var/cache/yum/* && \
