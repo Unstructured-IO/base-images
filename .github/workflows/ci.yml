@@ -24,6 +24,7 @@ jobs:
           make build-base-images
         env:
           DOCKER_PLATFORM: "linux/amd64,linux/arm64"
+          CI: "true"
 
   shellcheck:
     runs-on: ubuntu-latest
