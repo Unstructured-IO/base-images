@@ -33,7 +33,7 @@ RUN set -ex && \
     ./configure && make && make install && \
     cp m4/* /usr/share/aclocal && \
     cd .. && \
-    git clone --depth 1  https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
+    git clone --depth 1 --branch 5.3.1 https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
     cd tesseract-ocr || exit && \
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
     ./autogen.sh && ./configure --prefix=/usr/local --disable-shared --enable-static --with-extra-libraries=/usr/local/lib/ --with-extra-includes=/usr/local/lib/ && \
