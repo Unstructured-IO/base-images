@@ -1,0 +1,52 @@
+package:
+  name: leptonica
+  version: 1.75.3
+  description: leptonica compiled package for Wolfi based distros
+  target-architecture:
+    - amd64
+    - aarch64
+  copyright:
+    - license: Apache-2.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - wolfi-base
+      - ca-certificates
+      - gcc
+      - bash
+      - gcc-6
+      - linux-headers
+      - git
+      - autoconf
+      - coreutils
+      - build-base
+      - libtool
+      - automake
+      - make
+      - tiff-dev
+      - libpng-dev
+      - libjpeg-dev
+      - zlib-dev
+      - autoconf
+      - pkgconf-dev
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://github.com/DanBloomberg/leptonica/releases/download/1.75.3/leptonica-1.75.3.tar.gz
+      expected-sha256: a00f8fb06829ca6c8262bec8f78a6f985e049786f7c872a37b72fd7051ea087a
+  - runs: |
+      mkdir -p ${{targets.destdir}}/leptonica ${{targets.destdir}}/usr/local/lib ${{targets.destdir}}/usr/local/include ${{targets.destdir}}/usr/local/bin
+      ./configure --prefix=$HOME/local
+      make -j14
+      make install
+      cp -R $HOME/local/lib/* ${{targets.destdir}}/usr/local/lib/
+      cp -R $HOME/local/include/* ${{targets.destdir}}/usr/local/include/
+      cp -R $HOME/local/bin/* ${{targets.destdir}}/usr/local/bin/

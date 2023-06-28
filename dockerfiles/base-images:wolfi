@@ -1,0 +1,90 @@
+FROM cgr.dev/chainguard/wolfi-base:latest
+
+WORKDIR /app
+
+USER root
+
+COPY packages/ .
+
+RUN apk add openssh-keyscan && \
+  apk add --allow-untrusted ./pandoc-1.17.0.3-r0.apk && \
+  apk add --allow-untrusted ./poppler-23.06.0-r0.apk && \
+  apk add --allow-untrusted ./leptonica-1.75.3-r0.apk && \
+  apk add --allow-untrusted ./tesseract-0.1.0-r0.apk && \
+  apk add --allow-untrusted ./libreoffice-0.1.0-r0.apk
+
+RUN ln -s /usr/local/lib/libreoffice/program/soffice.bin /usr/local/bin/libreoffice && \
+  ln -s /usr/local/lib/libreoffice/program/soffice.bin /usr/local/bin/soffice && \
+  chmod +x /usr/local/lib/libreoffice/program/soffice.bin && \
+  chmod +x /usr/local/bin/libreoffice && \
+  chmod +x /usr/local/bin/soffice
+
+RUN apk update && apk add --no-cache \
+    autoconf \
+    automake \
+    bash \
+    gcc \
+    curl \
+    file \
+    gcc-6 \
+    libmagic \
+    libmagic-dev \
+    linux-headers \
+    make \
+    build-base \
+    wolfi-base \
+    pkgconf-dev \
+    py3-magic \
+    libtool \
+    fontconfig \
+    fontconfig-dev \
+    freetype \
+    freetype-dev \
+    openssl-dev \
+    libcrypto3 \
+    tiff-dev \
+    zlib-dev \
+    libffi \
+    libffi-dev \
+    perl \
+    lua5.3 \
+    gmp \
+    gzip \
+    cmake \
+    sqlite \
+    sqlite-dev \
+    bzip2-dev \
+    bzip2 \
+    xz-dev \
+    xz \
+    openssh-keyscan && \
+    curl -O https://www.python.org/ftp/python/3.9.17/Python-3.9.17.tgz && tar -xzf Python-3.9.17.tgz && \
+    cd Python-3.9.17/ && \
+    ./configure --enable-optimizations && \
+    make altinstall && \
+    cd .. && rm -rf Python-3.9.17* && \
+    ln -s /usr/local/bin/python3.9 /usr/local/bin/python3 && \
+    unlink /usr/bin/python && \
+    ln -s /usr/local/bin/python3.9 /usr/bin/python && \
+    pip3.9 install --upgrade setuptools pip poppler-utils python-magic && \
+    apk del \
+    autoconf \
+    automake \
+    build-base \
+    gcc \
+    gcc-6 \
+    linux-headers \
+    make \
+    pkgconf-dev \
+    libtool \
+    libmagic-dev \
+    tiff-dev \
+    zlib-dev \
+    openssl-dev \
+    libffi-dev \
+    cmake \
+    sqlite-dev \
+    bzip2-dev \
+    xz-dev
+
+COPY files/mime.types /etc/mime.types

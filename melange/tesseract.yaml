@@ -1,0 +1,68 @@
+package:
+  name: tesseract
+  version: 5.3.1
+  description: Tesseract compiled package for Wolfi based distros
+  target-architecture:
+    - amd64
+    - aarch64
+  copyright:
+    - license: Apache-2.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+      - '@local ./packages'
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - wolfi-base
+      - ca-certificates
+      - gcc
+      - bash
+      - leptonica
+      - gcc-6
+      - linux-headers
+      - git
+      - autoconf
+      - coreutils
+      - build-base
+      - libtool
+      - automake
+      - make
+      - autoconf
+      - pkgconf-dev
+      - libffi-dev
+      - libjpeg-dev
+      - zlib-dev
+      - libjpeg-turbo
+      - lz4-dev
+      - tiff-dev
+      - libwebp-dev
+      - libpng-dev
+
+pipeline:
+  - runs: |
+      cp packages/autoconf-archive-2017.09.28.tar.xz .
+      tar -xvf autoconf-archive-2017.09.28.tar.xz
+      cd autoconf-archive-2017.09.28
+      ./configure --prefix="${{targets.destdir}}"
+      make -j14
+      make install
+      mkdir -p "${{targets.destdir}}"/usr/share/aclocal
+      cp m4/* "${{targets.destdir}}"/usr/share/aclocal
+      git clone --depth 1 --branch 5.3.1 https://github.com/tesseract-ocr/tesseract.git
+      export PATH=$PATH:/usr/local/lib/
+      export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+      cd tesseract
+      cp /usr/local/include/leptonica/* ./include
+      ./autogen.sh
+      ./configure --prefix="${{targets.destdir}}" --with-extra-libraries=/usr/local/lib --with-extra-includes=/usr/local/include
+      make -j14
+      make install
+  - runs: |
+      mkdir -p "${{targets.destdir}}"/usr/local/share/tessdata
+      git clone https://github.com/tesseract-ocr/tessdata.git
+      cp tessdata/*.traineddata "${{targets.destdir}}"/usr/local/share/tessdata
