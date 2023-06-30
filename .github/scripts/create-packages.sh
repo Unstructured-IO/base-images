@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-ARCH="${ARCH:-arm64}"
+ARCH="${ARCH:-amd64}"
 PACKAGE="${PACKAGE:-}"
 
 if [ -z "$PACKAGE" ]; then
