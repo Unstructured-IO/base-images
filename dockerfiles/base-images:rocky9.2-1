@@ -1,11 +1,6 @@
 # syntax=docker/dockerfile:experimental
 FROM rockylinux:9.2
 
-RUN ls -lah /etc/yum.repos.d/
-
-# This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
-cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo
-
 # Install dependency packages and pandoc/libreoffice
 RUN dnf -y update && \
     dnf -y upgrade && \
