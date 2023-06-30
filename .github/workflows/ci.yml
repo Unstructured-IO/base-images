@@ -36,7 +36,7 @@ jobs:
           make build-base-images
         env:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
-          DOCKERFILE: ${{ matrix.image }}
+          DOCKERFILE: ${{ matrix.images }}
           CI: "true"
           SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
 
