@@ -13,7 +13,7 @@ if [ -z "$DOCKERFILE" ]; then
     exit 1
 fi
 
-ARCH=$(echo $DOCKER_PLATFORM |sed 's/\// /g' |awk '{print $2}')
+ARCH=$(echo "$DOCKER_PLATFORM" |sed 's/\// /g' |awk '{print $2}')
 
 cd dockerfiles
 docker buildx create --use
