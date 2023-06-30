@@ -47,7 +47,8 @@ RUN set -ex && \
     rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.75.1* && \
     dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool \
     zlib-devel pkconfig xz && \
-    dnf -y groupremove "Development Tools" && \
+    # (Trevor) uninstall of this package group fails due to it trying to remove systemd-udev
+    #   dnf -y groupremove "Development Tools" && \
     rm -rf /var/cache/yum/* && \
     rm -rf /tmp/* && \
     dnf clean all
