@@ -3,8 +3,7 @@ package:
   version: 5.3.1
   description: Tesseract compiled package for Wolfi based distros
   target-architecture:
-    - amd64
-    - aarch64
+    - x86_64
   copyright:
     - license: Apache-2.0
       paths:
@@ -44,12 +43,15 @@ environment:
       - libpng-dev
 
 pipeline:
+  - uses: fetch
+    with:
+      uri: http://mirror.squ.edu.om/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz
+      expected-sha256: 5c9fb5845b38b28982a3ef12836f76b35f46799ef4a2e46b48e2bd3c6182fa01
   - runs: |
-      cp packages/autoconf-archive-2017.09.28.tar.xz .
       tar -xvf autoconf-archive-2017.09.28.tar.xz
       cd autoconf-archive-2017.09.28
       ./configure --prefix="${{targets.destdir}}"
-      make -j14
+      make -j$(nproc)
       make install
       mkdir -p "${{targets.destdir}}"/usr/share/aclocal
       cp m4/* "${{targets.destdir}}"/usr/share/aclocal
@@ -60,7 +62,7 @@ pipeline:
       cp /usr/local/include/leptonica/* ./include
       ./autogen.sh
       ./configure --prefix="${{targets.destdir}}" --with-extra-libraries=/usr/local/lib --with-extra-includes=/usr/local/include
-      make -j14
+      make -j$(nproc)
       make install
   - runs: |
       mkdir -p "${{targets.destdir}}"/usr/local/share/tessdata

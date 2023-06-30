@@ -3,8 +3,7 @@ package:
   version: 2.5.0
   description: OpenJPEG library compiled package for Wolfi based distros
   target-architecture:
-    - amd64
-    - aarch64
+    - x86_64
   copyright:
     - license: 2-clauses * BSD License
       paths:
@@ -21,7 +20,6 @@ environment:
       - wolfi-base
       - ca-certificates
       - gcc
-      - wget
       - gzip
       - gnutar
       - bash

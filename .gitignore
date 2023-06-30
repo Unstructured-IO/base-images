@@ -1,2 +1,5 @@
 melange.rsa.pub
 melange.rsa
+*.apk
+APKINDEX.tar.gz
+.DS_Store

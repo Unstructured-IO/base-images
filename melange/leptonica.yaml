@@ -3,8 +3,7 @@ package:
   version: 1.75.3
   description: leptonica compiled package for Wolfi based distros
   target-architecture:
-    - amd64
-    - aarch64
+    - x86_64
   copyright:
     - license: Apache-2.0
       paths:
@@ -30,6 +29,7 @@ environment:
       - libtool
       - automake
       - make
+      - file
       - tiff-dev
       - libpng-dev
       - libjpeg-dev
@@ -45,7 +45,7 @@ pipeline:
   - runs: |
       mkdir -p ${{targets.destdir}}/leptonica ${{targets.destdir}}/usr/local/lib ${{targets.destdir}}/usr/local/include ${{targets.destdir}}/usr/local/bin
       ./configure --prefix=$HOME/local
-      make -j14
+      make -j$(nproc)
       make install
       cp -R $HOME/local/lib/* ${{targets.destdir}}/usr/local/lib/
       cp -R $HOME/local/include/* ${{targets.destdir}}/usr/local/include/

@@ -6,8 +6,7 @@ USER root
 
 COPY packages/ .
 
-RUN apk add openssh-keyscan && \
-  apk add --allow-untrusted ./pandoc-1.17.0.3-r0.apk && \
+RUN apk add --allow-untrusted ./pandoc-1.17.0.3-r0.apk && \
   apk add --allow-untrusted ./poppler-23.06.0-r0.apk && \
   apk add --allow-untrusted ./leptonica-1.75.3-r0.apk && \
   apk add --allow-untrusted ./tesseract-0.1.0-r0.apk && \
@@ -61,18 +60,24 @@ RUN apk update && apk add --no-cache \
     curl -O https://www.python.org/ftp/python/3.9.17/Python-3.9.17.tgz && tar -xzf Python-3.9.17.tgz && \
     cd Python-3.9.17/ && \
     ./configure --enable-optimizations && \
-    make altinstall && \
+    make -j$(nproc) altinstall && \
     cd .. && rm -rf Python-3.9.17* && \
     ln -s /usr/local/bin/python3.9 /usr/local/bin/python3 && \
     unlink /usr/bin/python && \
     ln -s /usr/local/bin/python3.9 /usr/bin/python && \
     pip3.9 install --upgrade setuptools pip poppler-utils python-magic && \
     apk del \
+    wolfi-base \
+    build-base \
     autoconf \
     automake \
     build-base \
+    freetype-dev \
+    fontconfig-dev \
     gcc \
     gcc-6 \
+    gmp \
+    libcrypto3 \
     linux-headers \
     make \
     pkgconf-dev \

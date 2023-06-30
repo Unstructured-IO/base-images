@@ -3,10 +3,9 @@ package:
   version: 23.06.0
   description: poppler compiled package for Wolfi based distros
   target-architecture:
-    - amd64
-    - aarch64
+    - x86_64
   copyright:
-    - license: Apache-2.0
+    - license: GNU General Public License v3.0
       paths:
         - "*"
 
@@ -48,22 +47,28 @@ environment:
       - libjpeg-turbo
 
 pipeline:
+  - uses: fetch
+    with:
+      uri: https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz
+      expected-sha256: 66a469b6e608a51f8347236f4912e27dc5c60c60d7d53ae9bfe4683316c6f04c
   - runs: |
-      cp packages/boost_1_82_0.tar.gz .
-      tar -xzvf boost_1_82_0.tar.gz
+      tar -xzf boost_1_82_0.tar.gz
       cd boost_1_82_0/
       ./bootstrap.sh
       ./b2 headers
       cp -r boost /usr/include/
-      cd ..
-      wget https://poppler.freedesktop.org/poppler-23.06.0.tar.xz
+  - uses: fetch
+    with:
+      uri: https://poppler.freedesktop.org/poppler-23.06.0.tar.xz
+      expected-sha256: d38c6b2f31c8f6f3727fb60a011a0e6c567ebf56ef1ccad36263ca9ed6448a65
+  - runs: |
       tar -xf poppler-23.06.0.tar.xz
       cd poppler-23.06.0/
       mkdir source
       mv * source || true
       mkdir -p /$[{targets.destdir}]/usr/include
       cmake ./source -DCMAKE_BUILD_TYPE=release
-      make -j 8
+      make -j$(nproc)
       make install
       mkdir -p "${{targets.destdir}}"/usr/local/include "${{targets.destdir}}"/usr/local/bin/ \
         "${{targets.destdir}}"/usr/local/lib64 "${{targets.destdir}}"/usr/local/share/man/man1 \
@@ -73,5 +78,3 @@ pipeline:
       cp -R /usr/local/share/man/man1 "${{targets.destdir}}"/usr/local/share/man/
       cp -R /usr/local/lib64/* "${{targets.destdir}}"/usr/local/lib64/
       cp -R /usr/local/lib/* "${{targets.destdir}}"/usr/local/lib/
-  - runs: |
-      wget https://files.pythonhosted.org/packages/fd/c8/2f212ff8f556fee8836a031cdcdac0781d419a9f3f5eb58a71a57e4ae3e7/poppler-utils-0.1.0.tar.gz
