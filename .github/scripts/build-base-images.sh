@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -euo pipefail
-DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-quay.io/unstructured-io}"
+DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-quay.io/unstructured-io/base-images}"
 PIP_VERSION="${PIP_VERSION:-22.2.1}"
 GITHUB_REF="${GITHUB_REF:-none}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
@@ -18,7 +18,7 @@ ARCH=$(echo "$DOCKER_PLATFORM" |sed 's/\// /g' |awk '{print $2}')
 cd dockerfiles
 docker buildx create --use
 DOCKERFILE=$(basename "$DOCKERFILE")
-DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY/$DOCKERFILE}-$ARCH"
+DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY:$DOCKERFILE}-$ARCH"
 
 BUILDX_COMMAND=(docker buildx build)
 if [ "$GITHUB_REF" == "refs/heads/main" ]; then
