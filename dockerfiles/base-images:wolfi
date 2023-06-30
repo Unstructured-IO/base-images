@@ -4,13 +4,14 @@ WORKDIR /app
 
 USER root
 
-COPY packages/ .
+COPY melange/packages/ ./packages
 
-RUN apk add --allow-untrusted ./pandoc-1.17.0.3-r0.apk && \
-  apk add --allow-untrusted ./poppler-23.06.0-r0.apk && \
-  apk add --allow-untrusted ./leptonica-1.75.3-r0.apk && \
-  apk add --allow-untrusted ./tesseract-0.1.0-r0.apk && \
-  apk add --allow-untrusted ./libreoffice-0.1.0-r0.apk
+RUN export ARCH=$(uname -m) && \
+  apk add --allow-untrusted ./packages/$ARCH/pandoc-3.1.4-r0.apk && \
+#  apk add --allow-untrusted ./packages/$ARCH/poppler-23.06.0-r0.apk && \
+  apk add --allow-untrusted ./packages/$ARCH/leptonica-1.75.3-r0.apk && \
+  apk add --allow-untrusted ./packages/$ARCH/tesseract-5.3.1-r0.apk && \
+  apk add --allow-untrusted ./packages/$ARCH/libreoffice-7.5.4-r0.apk
 
 RUN ln -s /usr/local/lib/libreoffice/program/soffice.bin /usr/local/bin/libreoffice && \
   ln -s /usr/local/lib/libreoffice/program/soffice.bin /usr/local/bin/soffice && \
