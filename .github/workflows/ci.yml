@@ -20,25 +20,25 @@ jobs:
       matrix:
         docker-platform: ["linux/arm64", "linux/amd64"]
         images: ["rocky9.2-1"]
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - name: Login to Quay.io
-          uses: docker/login-action@v2
-          with:
-            registry: quay.io
-            username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
-            password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
-        - name: Set up QEMU
-          uses: docker/setup-qemu-action@v2
-        - name: Build base images
-          run: |
-            make build-base-images
-          env:
-            DOCKER_PLATFORM: ${{ matrix.docker-platform }}
-            DOCKERFILE: ${{ matrix.image }}
-            CI: "true"
-            SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to Quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Build base images
+        run: |
+          make build-base-images
+        env:
+          DOCKER_PLATFORM: ${{ matrix.docker-platform }}
+          DOCKERFILE: ${{ matrix.image }}
+          CI: "true"
+          SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
 
   shellcheck:
     runs-on: ubuntu-latest
