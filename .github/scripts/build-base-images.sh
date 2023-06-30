@@ -1,11 +1,12 @@
 #!/bin/bash
 
 set -euo pipefail
-DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-quay.io/unstructured-io/base-images}"
+DOCKER_REPOSITORY="${DOCKER_REPOSITORY:-quay.io/unstructured-io}"
+REPO_NAME="base-images"
 PIP_VERSION="${PIP_VERSION:-22.2.1}"
 GITHUB_REF="${GITHUB_REF:-none}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
-DOCKERFILE="${DOCKERFILE:-}"
+DOCKERFILE="${DOCKERFILE:-rocky9.2-1}"
 CI="${CI:-false}"
 
 if [ -z "$DOCKERFILE" ]; then
@@ -18,7 +19,7 @@ ARCH=$(echo "$DOCKER_PLATFORM" |sed 's/\// /g' |awk '{print $2}')
 cd dockerfiles
 docker buildx create --use
 DOCKERFILE=$(basename "$DOCKERFILE")
-DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY:$DOCKERFILE}-$ARCH"
+DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY/REPO_NAME:$DOCKERFILE}-$ARCH"
 
 BUILDX_COMMAND=(docker buildx build)
 if [ "$GITHUB_REF" == "refs/heads/main" ]; then
@@ -36,7 +37,7 @@ DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}" \
 --build-arg PIP_VERSION="$PIP_VERSION" \
 --build-arg BUILDKIT_INLINE_CACHE=1 \
 --progress plain \
--t "$DOCKER_IMAGE" -f "$DOCKERFILE" .)
+-t "$DOCKER_IMAGE" -f "$REPO_NAME:$DOCKERFILE" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set
 if [ -n "${DOCKER_PLATFORM:-}" ]; then
