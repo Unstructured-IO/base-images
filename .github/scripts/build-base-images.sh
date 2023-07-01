@@ -19,7 +19,7 @@ ARCH=$(echo "$DOCKER_PLATFORM" |sed 's/\// /g' |awk '{print $2}')
 cd dockerfiles
 docker buildx create --use
 DOCKERFILE=$(basename "$DOCKERFILE")
-DOCKER_IMAGE="${DOCKER_IMAGE:-$DOCKER_REPOSITORY/$REPO_NAME:$DOCKERFILE}-$ARCH"
+DOCKER_IMAGE="$DOCKER_REPOSITORY/$REPO_NAME:$DOCKERFILE-$ARCH"
 
 BUILDX_COMMAND=(docker buildx build)
 if [ "$GITHUB_REF" == "refs/heads/main" ]; then

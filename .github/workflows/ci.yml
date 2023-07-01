@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_REPOSITORY: quay.io/unstructured-io/base-images
+  DOCKER_REPOSITORY: quay.io/unstructured-io
 
 jobs:
   build-images:
@@ -57,8 +57,8 @@ jobs:
         docker pull $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
     - name: Push multiarch manifest
       run: |
-        docker manifest create ${DOCKER_REPOSITORY}:${{ matrix.images }} $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
-        docker manifest push $DOCKER_REPOSITORY:${{ matrix.images }}
+        docker manifest create ${DOCKER_REPOSITORY}/base-images:${{ matrix.images }} ${DOCKER_REPOSITORY}/base-images:${{ matrix.images }}-amd64 ${DOCKER_REPOSITORY}/base-images:${{ matrix.images }}-arm64
+        docker manifest push ${DOCKER_REPOSITORY}/base-images:${{ matrix.images }}
 
   shellcheck:
     runs-on: ubuntu-latest
