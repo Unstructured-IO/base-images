@@ -38,27 +38,27 @@ jobs:
     strategy:
       matrix:
         images: ["rocky8.7-3", "rocky9.2-1"]
-        runs-on: ubuntu-latest
-        needs: [build-images]
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
-        - name: Login to Quay.io
-          uses: docker/login-action@v2
-          with:
-            registry: quay.io
-            username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
-            password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
-        - name: Pull AMD image
-          run: |
-            docker pull $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64
-        - name: Pull ARM image
-          run: |
-            docker pull $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
-        - name: Push multiarch manifest
-          run: |
-            docker manifest create ${DOCKER_REPOSITORY}:${{ matrix.images }} $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
-            docker manifest push $DOCKER_REPOSITORY:${{ matrix.images }}
+      runs-on: ubuntu-latest
+      needs: [build-images]
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Login to Quay.io
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
+      - name: Pull AMD image
+        run: |
+          docker pull $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64
+      - name: Pull ARM image
+        run: |
+          docker pull $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
+      - name: Push multiarch manifest
+        run: |
+          docker manifest create ${DOCKER_REPOSITORY}:${{ matrix.images }} $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
+          docker manifest push $DOCKER_REPOSITORY:${{ matrix.images }}
 
   shellcheck:
     runs-on: ubuntu-latest
