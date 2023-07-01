@@ -31,6 +31,7 @@ jobs:
           DOCKERFILE: ${{ matrix.images }}
           CI: "true"
       - name: Create manifest
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           ARCH=$(echo ${{ matrix.docker-platform }} |sed 's/\// /g' |awk '{print $2}')
           docker pull quay.io/unstructured-io/base-images:${{ matrix.images }}-$ARCH
