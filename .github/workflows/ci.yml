@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         docker-platform: ["linux/arm64", "linux/amd64"]
-        images: ["rocky9.2-1"]
+        images: ["rocky8.7-3", "rocky9.2-1"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
