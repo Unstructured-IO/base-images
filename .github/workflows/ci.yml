@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  DOCKER_REPOSITORY: quay.io/unstructured-io
+  DOCKER_IMAGE: base-images
+
 
 jobs:
   publish-images:
@@ -26,14 +30,14 @@ jobs:
         password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
     - name: Pull AMD image
       run: |
-        docker pull quay.io/unstructured-io/base-images:${{ matrix.images }}-amd64
+        docker pull --platform linux/amd64 $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64
     - name: Pull ARM image
       run: |
-        docker pull quay.io/unstructured-io/base-images:${{ matrix.images }}-arm64
+        docker pull --platform linux/arm64 $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64
     - name: Push multiarch manifest
       run: |
-        docker manifest create quay.io/unstructured-io/base-images:${{ matrix.images }} quay.io/unstructured-io/base-images:${{ matrix.images }}-amd64 quay.io/unstructured-io/base-images:${{ matrix.images }}-arm64
-        docker manifest push quay.io/unstructured-io/base-images:${{ matrix.images }}
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }} $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64 $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64
+        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}
 
   shellcheck:
     runs-on: ubuntu-latest
