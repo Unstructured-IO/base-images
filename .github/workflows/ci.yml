@@ -31,13 +31,15 @@ jobs:
     - name: Pull AMD image
       run: |
         docker pull --platform linux/amd64 $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64
+        docker tag $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64 unstructured-io/$DOCKER_IMAGE:${{ matrix.images }}-amd64
     - name: Pull ARM image
       run: |
         docker pull --platform linux/arm64 $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64
+        docker tag $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64 unstructured-io/$DOCKER_IMAGE:${{ matrix.images }}-arm64
     - name: Push multiarch manifest
       run: |
-        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }} $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64 $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64
-        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }} unstructured-io/$DOCKER_IMAGE:${{ matrix.images }}-amd64 unstructured-io/$DOCKER_IMAGE:${{ matrix.images }}-arm64
+        docker manifest push unstructured-io/$DOCKER_IMAGE:${{ matrix.images }}
 
   shellcheck:
     runs-on: ubuntu-latest
