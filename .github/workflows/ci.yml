@@ -26,10 +26,10 @@ jobs:
         password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
     - name: Pull AMD image
       run: |
-        docker pull quay.io/unstructured-io:${{ matrix.images }}-amd64
+        docker pull quay.io/unstructured-io/base-images:${{ matrix.images }}-amd64
     - name: Pull ARM image
       run: |
-        docker pull quay.io/unstructured-io:${{ matrix.images }}-arm64
+        docker pull quay.io/unstructured-io/base-images:${{ matrix.images }}-arm64
     - name: Push multiarch manifest
       run: |
         docker manifest create quay.io/unstructured-io/base-images:${{ matrix.images }} quay.io/unstructured-io/base-images:${{ matrix.images }}-amd64 quay.io/unstructured-io/base-images:${{ matrix.images }}-arm64
