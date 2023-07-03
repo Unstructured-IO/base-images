@@ -53,13 +53,13 @@ jobs:
         password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
     - name: Pull AMD image
       run: |
-        docker pull --platform linux/amd64 $DOCKER_BUILD_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64
+        docker pull --platform linux/amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64
     - name: Pull ARM image
       run: |
-        docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64
+        docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
     - name: Push multiarch manifest
       run: |
-        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }} $DOCKER_BUILD_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-amd64 $DOCKER_BUILD_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}-arm64
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }} $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
         docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}
 
   shellcheck:
