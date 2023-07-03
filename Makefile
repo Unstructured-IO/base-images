@@ -2,6 +2,7 @@ PROJECT_DIR ?= $(realpath $(dir $(firstword $(MAKEFILE_LIST))))
 DOCKER_PLATFORM:= $(shell echo $(DOCKER_PLATFORM))
 BASE_IMAGE_NAME:= $(shell echo $(BASE_IMAGE_NAME))
 ARCH:= $(shell echo $(ARCH))
+DOCKERFILE:= $(shell echo $(DOCKERFILE))
 CI:= $(shell echo $(CI))
 
 .PHONY: help
@@ -10,7 +11,7 @@ help: Makefile
 
 .PHONY: build-base-images
 build-base-images:
-	DOCKER_PLATFORM=$(DOCKER_PLATFORM) CI=$(CI) BASE_IMAGE_NAME=$(BASE_IMAGE_NAME) $(PROJECT_DIR)/.github/scripts/build-base-images.sh
+	DOCKER_PLATFORM=$(DOCKER_PLATFORM) DOCKERFILE=$(DOCKERFILE) CI=$(CI) $(PROJECT_DIR)/.github/scripts/build-base-images.sh
 
 .PHONY: create-packages
 create-packages: build-openjpeg build-pandoc build-boost build-poppler build-leptonica build-tesseract build-libreoffice
