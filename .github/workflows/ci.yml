@@ -8,7 +8,7 @@ on:
 
 env:
   DOCKER_REPOSITORY: quay.io/unstructured-io
-  DOCKER_BUILD_REPOSITORY: github.com/unstructured-io/build-base-images
+  DOCKER_BUILD_REPOSITORY: quay.io/unstructured-io/build-base-images
   DOCKER_IMAGE: base-images
 
 jobs:
