@@ -34,8 +34,6 @@ if [ "$CI" == "false" ]; then
     BUILDX_COMMAND+=("--load")
 fi
 
-echo "$DOCKER_IMAGE-$GITHUB_SHA"
-
 # shellcheck disable=SC2206
 DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}" \
 --build-arg PIP_VERSION="$PIP_VERSION" \
