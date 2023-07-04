@@ -51,7 +51,7 @@ jobs:
   publish-images:
     strategy:
       matrix:
-        images: ["rocky8.7-3", "rocky9.2-1"]
+        images: ["rocky8.7-4", "rocky9.2-1"]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
