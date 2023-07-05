@@ -9,7 +9,7 @@ GITHUB_REF="${GITHUB_REF:-none}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
 DOCKERFILE="${DOCKERFILE:-rocky9.2-1}"
 CI="${CI:-false}"
-GITHUB_SHA="${GITHUB_SHA:-$(git rev-parse --short HEAD)}"
+SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 
 if [ -z "$DOCKERFILE" ]; then
     echo "DOCKERFILE is not set"
