@@ -9,7 +9,7 @@ GITHUB_REF="${GITHUB_REF:-none}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
 DOCKERFILE="${DOCKERFILE:-rocky9.2-1}"
 CI="${CI:-false}"
-SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
+SHORT_SHA="${GITHUB_SHA:-$(git rev-parse --short HEAD)}"
 
 if [ -z "$DOCKERFILE" ]; then
     echo "DOCKERFILE is not set"
@@ -39,7 +39,7 @@ DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}" \
 --build-arg PIP_VERSION="$PIP_VERSION" \
 --build-arg BUILDKIT_INLINE_CACHE=1 \
 --progress plain \
--t "$DOCKER_IMAGE-$GITHUB_SHA" -f "$REPO:$DOCKERFILE" .)
+-t "$DOCKER_IMAGE-$SHORT_SHA" -f "$REPO:$DOCKERFILE" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set
 if [ -n "${DOCKER_PLATFORM:-}" ]; then
