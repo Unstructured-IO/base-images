@@ -52,14 +52,14 @@ RUN set -ex && \
 # Install Python
 RUN dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel && \
     dnf -y groupinstall "Development Tools" && \
-    curl -O https://www.python.org/ftp/python/3.8.17/Python-3.8.17.tgz && tar -xzf Python-3.8.17.tgz && \
-    cd Python-3.8.17/ && \
+    curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz && tar -xzf Python-3.10.13.tgz && \
+    cd Python-3.10.13/ && \
     ./configure --enable-optimizations && \
     make altinstall && \
-    cd .. && rm -rf Python-3.8.17* && \
-    ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
+    cd .. && rm -rf Python-3.10.13* && \
+    ln -s /usr/local/bin/python3.10 /usr/local/bin/python3 && \
     dnf -y remove bzip2-devel libffi-devel make sqlite-devel && \
-    pip3.8 install --upgrade setuptools pip && \
+    pip3.10 install --upgrade setuptools pip && \
     dnf -y groupremove "Development Tools" && \
     rm -rf /var/cache/yum/* && \
     dnf clean all
