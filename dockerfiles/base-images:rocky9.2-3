@@ -24,7 +24,6 @@ RUN dnf -y update && \
 RUN set -ex && \
     dnf install -y opencv opencv* zlib zlib-devel perl-core clang libpng libpng-devel libtiff libtiff-devel \
     libwebp libwebp-devel libjpeg libjpeg-devel libjpeg-turbo-devel git-core libtool pkgconfig xz && \
-    dnf -y groupinstall "Development Tools" && \
     wget https://github.com/DanBloomberg/leptonica/releases/download/1.75.1/leptonica-1.75.1.tar.gz && \
     tar -xzvf leptonica-1.75.1.tar.gz && \
     cd leptonica-1.75.1 || exit && \
@@ -47,23 +46,25 @@ RUN set -ex && \
     rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.75.1* && \
     dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool \
     zlib-devel pkconfig xz && \
-    # (Trevor) uninstall of this package group fails due to it trying to remove systemd-udev
-    #   dnf -y groupremove "Development Tools" && \
     rm -rf /var/cache/yum/* && \
     rm -rf /tmp/* && \
     dnf clean all
 
 # Install Python
 RUN dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel && \
+    dnf -y install python-pip && \
+    pip3.9 install --upgrade setuptools pip && \
     dnf -y groupinstall "Development Tools" && \
     curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz && tar -xzf Python-3.10.13.tgz && \
     cd Python-3.10.13/ && \
     ./configure --enable-optimizations && \
     make altinstall && \
     cd .. && rm -rf Python-3.10.13* && \
-    ln -s /usr/local/bin/python3.10 /usr/local/bin/python3 && \
-    dnf -y remove bzip2-devel libffi-devel make sqlite-devel && \
     pip3.10 install --upgrade setuptools pip && \
+    ln -s /usr/local/bin/python3.10 /usr/local/bin/python3 && \
+    # (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
+    rpm --nodeps -e python3-setuptools-53.0.0-12.el9.noarch && \
+    rm -rf /usr/local/lib/python3.9/site-packages/setuptools && \
     dnf -y groupremove "Development Tools" && \
     rm -rf /var/cache/yum/* && \
     dnf clean all
