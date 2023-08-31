@@ -61,7 +61,7 @@ RUN dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel 
     ./configure --enable-optimizations && \
     make altinstall && \
     cd .. && rm -rf Python-3.10.12* && \
-    ln -s /usr/local/bin/python3.8 /usr/local/bin/python3 && \
+    ln -s /usr/local/bin/python3.10 /usr/local/bin/python3 && \
     dnf -y remove bzip2-devel libffi-devel make sqlite-devel && \
     pip3.10 install --upgrade setuptools pip && \
     dnf -y groupremove "Development Tools" && \
