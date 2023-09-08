@@ -12,8 +12,9 @@ RUN dnf -y update && \
     # Needed for LibreOffice to install base components on aarch64
     sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/Rocky-Devel.repo && \
     ARCH=$(uname -m) && if [ "$ARCH" == "aarch64" ]; then ARCH="arm64"; else ARCH="amd64"; fi && \
-    wget https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-linux-$ARCH.tar.gz && \
-    tar xvzf pandoc-3.1.2-linux-$ARCH.tar.gz --strip-components 1 -C '/usr/local' && \
+    wget https://github.com/jgm/pandoc/releases/download/3.1.7/pandoc-3.1.7-linux-$ARCH.tar.gz && \
+    tar xvzf pandoc-3.1.7-linux-$ARCH.tar.gz --strip-components 1 -C '/usr/local' && \
+    rm -rf pandoc-3.1.7-linux-$ARCH.tar.gz && \
     dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core && \
     sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/Rocky-Devel.repo && \
     rm -rf /var/cache/yum/* && \
@@ -24,9 +25,9 @@ RUN dnf -y update && \
 RUN set -ex && \
     dnf install -y opencv opencv* zlib zlib-devel perl-core clang libpng libpng-devel libtiff libtiff-devel \
     libwebp libwebp-devel libjpeg libjpeg-devel libjpeg-turbo-devel git-core libtool pkgconfig xz && \
-    wget https://github.com/DanBloomberg/leptonica/releases/download/1.75.1/leptonica-1.75.1.tar.gz && \
-    tar -xzvf leptonica-1.75.1.tar.gz && \
-    cd leptonica-1.75.1 || exit && \
+    wget https://github.com/DanBloomberg/leptonica/releases/download/1.83.1/leptonica-1.83.1.tar.gz && \
+    tar -xzvf leptonica-1.83.1.tar.gz && \
+    cd leptonica-1.83.1 || exit && \
     ./configure && make && make install && \
     cd .. && \
     wget http://mirror.squ.edu.om/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz && \
@@ -35,7 +36,7 @@ RUN set -ex && \
     ./configure && make && make install && \
     cp m4/* /usr/share/aclocal && \
     cd .. && \
-    git clone --depth 1 --branch 5.3.1 https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
+    git clone --depth 1 --branch 5.3.2 https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
     cd tesseract-ocr || exit && \
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
     ./autogen.sh && ./configure --prefix=/usr/local --disable-shared --enable-static --with-extra-libraries=/usr/local/lib/ --with-extra-includes=/usr/local/lib/ && \
@@ -43,7 +44,7 @@ RUN set -ex && \
     cd .. && \
     git clone https://github.com/tesseract-ocr/tessdata.git  && \
     cp tessdata/*.traineddata /usr/local/share/tessdata && \
-    rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.75.1* && \
+    rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.83.1* && \
     dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool \
     zlib-devel pkconfig xz && \
     rm -rf /var/cache/yum/* && \
@@ -55,11 +56,11 @@ RUN dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel 
     dnf -y install python-pip && \
     pip3.9 install --upgrade setuptools pip && \
     dnf -y groupinstall "Development Tools" && \
-    curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz && tar -xzf Python-3.10.13.tgz && \
-    cd Python-3.10.13/ && \
+    curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.15.tgz && tar -xzf Python-3.10.15.tgz && \
+    cd Python-3.10.15/ && \
     ./configure --enable-optimizations && \
     make altinstall && \
-    cd .. && rm -rf Python-3.10.13* && \
+    cd .. && rm -rf Python-3.10.15* && \
     pip3.10 install --upgrade setuptools pip && \
     ln -s /usr/local/bin/python3.10 /usr/local/bin/python3 && \
     # (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
