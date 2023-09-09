@@ -7,7 +7,7 @@ BUILD_REPO="${BUILD_REPO:-build-base-images}"
 PIP_VERSION="${PIP_VERSION:-22.2.1}"
 GITHUB_REF="${GITHUB_REF:-none}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
-DOCKERFILE="${DOCKERFILE:-rocky9.2-3}"
+DOCKERFILE="${DOCKERFILE:-rocky9.2-4}"
 CI="${CI:-false}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 
