@@ -1,0 +1,125 @@
+package:
+  name: libreoffice
+  version: 7.5.4
+  description: Libreoffice compiled package for Wolfi based distros
+  target-architecture:
+    - x86_64
+    - aarch64
+  copyright:
+    - license: Mozilla Public License v2.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+      - '@local ./packages'
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - wolfi-base
+      - ca-certificates
+      - gcc
+      - pandoc
+      - openjpeg
+      - gcc-6
+      - bash
+      - linux-headers
+      - git
+      - autoconf
+      - coreutils
+      - build-base
+      - libtool
+      - automake
+      - make
+      - autoconf
+      - pkgconf-dev
+      - zip
+      - libxext-dev
+      - libxext
+      - ncurses-dev
+      - busybox
+      - libeconf-dev
+      - linux-pam-dev
+      - libcap-ng-dev
+      - gnutls
+      - libtool
+      - bison
+      - cups-dev
+      - fontconfig-dev
+      - libxslt-dev
+      - libxslt
+      - krb5-dev
+      - gnutar
+      - freetype-dev
+      - freetype
+      - icu
+      - gperf
+      - expat
+      - expat-dev
+      - libxml2-dev
+      - libxml2
+      - zlib-dev
+      - mercurial
+      - ninja
+      - python3
+      - python3-dev
+      - py3-pip
+      - libcurl4
+      - curl-dev
+      - libassuan-dev
+      - libjpeg-dev
+      - libassuan
+      - libice-dev
+      - libice
+      - libsm-dev
+      - libsm
+      - libxrender-dev
+      - libxrender
+      - libxt-dev
+      - libxt
+      - libx11-dev
+      - libx11-static
+      - libx11
+      - flex-dev
+      - curl
+      - patch
+      - diffutils
+      - openjdk-20
+      - openjdk-20-default-jvm
+      - openjdk-20-jre
+      - openjdk-20-jre-base
+      - libxml2-py3
+      - libxml2-utils
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://download.documentfoundation.org/libreoffice/src/7.5.4/libreoffice-7.5.4.2.tar.xz
+      expected-sha256: 68bbd1b79ffa4c33ed80f25520b9e6d69e3be23c9b4a0f0c9d859cc9a24865e8
+  - runs: |
+      mkdir $HOME/local
+      mkdir -p ${{targets.destdir}}/usr/local/lib/
+      ./autogen.sh \
+      --prefix=$HOME/local \
+      --enable-release-build=yes \
+      --enable-python=system \
+      --with-system-curl \
+      --with-system-expat \
+      --without-lxml \
+      --without-system-libxml \
+      --with-system-jpeg \
+      --with-system-zlib \
+      --disable-gui \
+      --disable-cups \
+      --disable-lotuswordpro \
+      --without-java \
+      --without-krb5 \
+      --without-system-dicts \
+      --without-system-nss && \
+      make -j$(nproc) && \
+      make install
+  - runs: |
+      mkdir -p ${{targets.destdir}}/usr/local/lib/
+      cp -R $HOME/local/ ${{targets.destdir}}

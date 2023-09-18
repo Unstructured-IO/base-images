@@ -1,0 +1,74 @@
+package:
+  name: tesseract
+  version: 5.3.2
+  description: Tesseract compiled package for Wolfi based distros
+  target-architecture:
+    - x86_64
+    - aarch64
+  copyright:
+    - license: Apache-2.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+      - '@local ./packages'
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - wolfi-base
+      - ca-certificates
+      - gcc
+      - bash
+      - leptonica
+      - gcc-6
+      - linux-headers
+      - git
+      - glibc-dev
+      - autoconf
+      - coreutils
+      - build-base
+      - libtool
+      - automake
+      - make
+      - autoconf
+      - pkgconf-dev
+      - libffi-dev
+      - libjpeg-dev
+      - zlib-dev
+      - libjpeg-turbo
+      - lz4-dev
+      - tiff-dev
+      - libwebp-dev
+      - libpng-dev
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: http://mirror.squ.edu.om/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz
+      expected-sha256: 5c9fb5845b38b28982a3ef12836f76b35f46799ef4a2e46b48e2bd3c6182fa01
+  - runs: |
+      tar -xvf autoconf-archive-2017.09.28.tar.xz
+      cd autoconf-archive-2017.09.28
+      ./configure --prefix="${{targets.destdir}}"
+      make -j$(nproc)
+      make install
+      mkdir -p "${{targets.destdir}}"/usr/share/aclocal
+      cp m4/* "${{targets.destdir}}"/usr/share/aclocal
+      git clone --depth 1 --branch 5.3.2 https://github.com/tesseract-ocr/tesseract.git
+      export PATH=$PATH:/usr/local/lib/
+      export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+      cd tesseract
+      cp /usr/local/include/leptonica/* ./include
+      ./autogen.sh
+      ./configure --prefix="${{targets.destdir}}" --with-extra-libraries=/usr/local/lib --with-extra-includes=/usr/local/include
+      make -j$(nproc)
+      make install
+  - runs: |
+      mkdir -p "${{targets.destdir}}"/usr/local/share/tessdata
+      git clone https://github.com/tesseract-ocr/tessdata.git
+      cp tessdata/*.traineddata "${{targets.destdir}}"/usr/local/share/tessdata
+
+
