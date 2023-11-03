@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rockylinux:9.2
+FROM rockylinux:9.2-minimal
 
 # Install dependency packages and pandoc/libreoffice
 RUN dnf -y update && \
@@ -12,9 +12,9 @@ RUN dnf -y update && \
     # Needed for LibreOffice to install base components on aarch64
     sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/Rocky-Devel.repo && \
     ARCH=$(uname -m) && if [ "$ARCH" == "aarch64" ]; then ARCH="arm64"; else ARCH="amd64"; fi && \
-    wget https://github.com/jgm/pandoc/releases/download/3.1.7/pandoc-3.1.7-linux-$ARCH.tar.gz && \
-    tar xvzf pandoc-3.1.7-linux-$ARCH.tar.gz --strip-components 1 -C '/usr/local' && \
-    rm -rf pandoc-3.1.7-linux-$ARCH.tar.gz && \
+    wget https://github.com/jgm/pandoc/releases/download/3.1.9/pandoc-3.1.9-linux-$ARCH.tar.gz && \
+    tar xvzf pandoc-3.1.9-linux-$ARCH.tar.gz --strip-components 1 -C '/usr/local' && \
+    rm -rf pandoc-3.1.9-linux-$ARCH.tar.gz && \
     dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core && \
     sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/Rocky-Devel.repo && \
     rm -rf /var/cache/yum/* && \
@@ -36,7 +36,7 @@ RUN set -ex && \
     ./configure && make && make install && \
     cp m4/* /usr/share/aclocal && \
     cd .. && \
-    git clone --depth 1 --branch 5.3.2 https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
+    git clone --depth 1 --branch 5.3.3 https://github.com/tesseract-ocr/tesseract.git tesseract-ocr && \
     cd tesseract-ocr || exit && \
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
     ./autogen.sh && ./configure --prefix=/usr/local --disable-shared --enable-static --with-extra-libraries=/usr/local/lib/ --with-extra-includes=/usr/local/lib/ && \
