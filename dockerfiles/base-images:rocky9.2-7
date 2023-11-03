@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM rockylinux:9.2-minimal
+FROM rockylinux:9.2
 
 # Install dependency packages and pandoc/libreoffice
 RUN dnf -y update && \
