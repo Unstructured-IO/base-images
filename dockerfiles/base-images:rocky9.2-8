@@ -4,7 +4,7 @@ FROM rockylinux:9.2
 # Install dependency packages and pandoc/libreoffice
 RUN dnf -y update && \
     dnf -y upgrade && \
-    dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11 && \
+    dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11 cuda-11-8 && \
     dnf -y install epel-release && \
     # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
     cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo && \
