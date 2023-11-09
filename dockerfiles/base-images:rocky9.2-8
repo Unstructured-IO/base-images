@@ -6,7 +6,7 @@ RUN dnf -y update && \
     dnf -y upgrade && \
     dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11 && \
     if [[ "$(uname -m)" == "aarch64" ]]; then dnf -y install cuda-11-8; fi && \
-    ARCH=$(uname -m) && if [[ "$ARCH" == "x86_64" ] || [ "$ARCH" == "amd64" ]]; then dnf install cuda-11-8; fi && \
+    ARCH=$(uname -m) && if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then dnf install cuda-11-8; fi && \
     dnf -y install epel-release && \
     # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
     cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo && \
