@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         docker-platform: ["linux/arm64", "linux/amd64"]
-        images: ["rocky9.2-7"]
+        images: ["rocky9.2-8"]
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
@@ -51,7 +51,7 @@ jobs:
   publish-images:
     strategy:
       matrix:
-        images: ["rocky9.2-7"]
+        images: ["rocky9.2-8"]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
