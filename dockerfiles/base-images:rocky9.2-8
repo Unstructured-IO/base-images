@@ -6,9 +6,8 @@ RUN dnf -y update && \
     dnf -y upgrade && \
     dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11 && \
     ARCH=$(uname -m) && if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then \
-    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo; else \
-    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/sbsa/cuda-rhel9.repo; fi && \
-    dnf -y install cuda-11-8 && \
+    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo; dnf -y install cuda-11-8; else \
+    dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/cross-linux-sbsa/cuda-rhel9-cross-linux-sbsa.repo && dnf -y install cuda-cross-sbsa-11-8; fi && \
     dnf -y install epel-release && \
     # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
     cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo && \
