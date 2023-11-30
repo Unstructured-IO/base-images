@@ -62,8 +62,10 @@ pipeline:
       cd poppler-23.09.0/
       mkdir source
       mv * source || true
-      mkdir -p ${{targets.destdir}}/usr/include
-      cmake ./source
+      mkdir -p "${{targets.destdir}}"/usr/local/lib \
+        "${{targets.destdir}}"/usr/local/lib64 \
+        "${{targets.destdir}}"/usr/local/bin/
+      cmake ./source -DCMAKE_BUILD_TYPE=Release
       make -j$(nproc)
       make install DESTDIR="${{targets.destdir}}"
 
