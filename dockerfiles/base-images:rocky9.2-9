@@ -72,3 +72,8 @@ RUN dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel 
     dnf -y groupremove "Development Tools" && \
     rm -rf /var/cache/yum/* && \
     dnf clean all
+
+# Enable legacy functions in openssl
+# This fixes crypto related errors on certain hosts
+# See also https://github.com/ethereum/execution-specs/issues/506
+RUN sed -i '/##legacy = legacy_sect/s/^##//; /##\[legacy_sect\]/s/^##//; /##activate = 1/s/^##//' /etc/ssl/openssl.cnf
