@@ -18,8 +18,6 @@ fi
 
 ARCH=$(echo "$DOCKER_PLATFORM" |sed 's/\// /g' |awk '{print $2}')
 
-cd dockerfiles
-docker buildx create --use
 DOCKERFILE=$(basename "$DOCKERFILE")
 DOCKER_IMAGE="$DOCKER_REPOSITORY/$BUILD_REPO:$DOCKERFILE-$ARCH"
 
@@ -39,7 +37,7 @@ DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}" \
 --build-arg PIP_VERSION="$PIP_VERSION" \
 --build-arg BUILDKIT_INLINE_CACHE=1 \
 --progress plain \
--t "$DOCKER_IMAGE-$SHORT_SHA" -f "$REPO:$DOCKERFILE" .)
+-t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set
 if [ -n "${DOCKER_PLATFORM:-}" ]; then
