@@ -47,6 +47,8 @@ jobs:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
           DOCKERFILE: ${{ matrix.images }}
           CI: "true"
+      - name: Print images
+        run: docker images
 
   publish-images:
     strategy:
