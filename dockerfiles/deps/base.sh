@@ -32,10 +32,11 @@ cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo
 dnf config-manager --enable crb
 
 # Needed for LibreOffice to install base components on aarch64
+pandoc_filename=pandoc-"$PANDOC_VERSION"-linux-"$ARCH".tar.gz
 sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/Rocky-Devel.repo
-wget https://github.com/jgm/pandoc/releases/download/"$PANDOC_VERSION"/pandoc-"$PANDOC_VERSION"-linux-"$ARCH".tar.gz
-tar xvzf pandoc-"$PANDOC_VERSION"-linux-"$ARCH".tar.gz --strip-components 1 -C '/usr/local'
-rm -rf pandoc-"$PANDOC_VERSION"-linux-"$ARCH".tar.gz
+wget https://github.com/jgm/pandoc/releases/download/"$PANDOC_VERSION"/"$pandoc_filename"
+tar xvzf "$pandoc_filename" --strip-components 1 -C '/usr/local'
+rm -rf "$pandoc_filename"
 dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core
 sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/Rocky-Devel.repo
 
