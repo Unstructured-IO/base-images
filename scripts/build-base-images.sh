@@ -11,36 +11,36 @@ CI="${CI:-false}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 
 if [ -z "$DOCKERFILE" ]; then
-    echo "DOCKERFILE is not set"
-    exit 1
+  echo "DOCKERFILE is not set"
+  exit 1
 fi
 
-ARCH=$(echo "$DOCKER_PLATFORM" |sed 's/\// /g' |awk '{print $2}')
+ARCH=$(echo "$DOCKER_PLATFORM" | sed 's/\// /g' | awk '{print $2}')
 
 DOCKERFILE=$(basename "$DOCKERFILE")
 DOCKER_IMAGE="$DOCKER_REPOSITORY/$BUILD_REPO:$DOCKERFILE-$ARCH"
 
 BUILDX_COMMAND=(docker buildx build)
 if [ "$GITHUB_REF" == "refs/heads/main" ]; then
-    BUILDX_COMMAND+=("--push")
+  BUILDX_COMMAND+=("--push")
 fi
 
 if [ "$CI" == "false" ]; then
-    # (tabossert) This is a local build, so we want to load the image into the local docker daemon
-    # Buildx does not support loading multi-arch builds, so CI needs to skip loading.
-    BUILDX_COMMAND+=("--load")
+  # (tabossert) This is a local build, so we want to load the image into the local docker daemon
+  # Buildx does not support loading multi-arch builds, so CI needs to skip loading.
+  BUILDX_COMMAND+=("--load")
 fi
 
 # shellcheck disable=SC2206
-DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}" \
---build-arg PIP_VERSION="$PIP_VERSION" \
---build-arg BUILDKIT_INLINE_CACHE=1 \
---progress plain \
--t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
+DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
+  --build-arg PIP_VERSION="$PIP_VERSION"
+  --build-arg BUILDKIT_INLINE_CACHE=1
+  --progress plain
+  -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set
 if [ -n "${DOCKER_PLATFORM:-}" ]; then
-    DOCKER_BUILD_CMD+=("--platform=$DOCKER_PLATFORM")
+  DOCKER_BUILD_CMD+=("--platform=$DOCKER_PLATFORM")
 fi
 
 DOCKER_BUILDKIT=1 "${DOCKER_BUILD_CMD[@]}"
