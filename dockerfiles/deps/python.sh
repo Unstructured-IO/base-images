@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel
 dnf -y install python-pip
 pip3.9 install --upgrade setuptools pip

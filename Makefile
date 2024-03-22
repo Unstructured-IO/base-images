@@ -8,14 +8,17 @@ CI:= $(shell echo $(CI))
 help: Makefile
 	@sed -n 's/^\(## \)\([a-zA-Z]\)/\2/p' $<
 
+## build-base-images:		build all the base images defined in this repo
 .PHONY: build-base-images
 build-base-images:
 	DOCKER_PLATFORM=$(DOCKER_PLATFORM) DOCKERFILE=$(DOCKERFILE) SHORT_SHA=$(SHORT_SHA) CI=$(CI) $(PROJECT_DIR)/scripts/build-base-images.sh
 
-.PHONY: tidy_shell
+## tidy-shell:			run the shell syntax linter to fix issues in-place
+.PHONY: tidy-shell
 tidy-shell:
 	shfmt -i 2 -l -w .
 
+## check-shell:			run the shell syntax linter, raising an error if any diff found
 .PHONY: check-shell
 check-shell:
 	shfmt -i 2 -d .

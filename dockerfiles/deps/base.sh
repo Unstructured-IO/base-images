@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 GPU_ENABLED=${GPU_ENABLED:-"true"}
 PANDOC_VERSION=${PANDOC_VERSION:-"3.1.9"}
 
@@ -32,9 +34,15 @@ cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo
 dnf config-manager --enable crb
 
 # Needed for LibreOffice to install base components on aarch64
-pandoc_filename=pandoc-"$PANDOC_VERSION"-linux-"$ARCH".tar.gz
+if [ "$ARCH" == "aarch64" ]; then
+  PANDOC_ARCH="arm64"
+else
+  PANDOC_ARCH="amd64"
+fi
+pandoc_filename=pandoc-"$PANDOC_VERSION"-linux-"$PANDOC_ARCH".tar.gz
+pandoc_url=https://github.com/jgm/pandoc/releases/download/"$PANDOC_VERSION"/"$pandoc_filename"
 sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/Rocky-Devel.repo
-wget https://github.com/jgm/pandoc/releases/download/"$PANDOC_VERSION"/"$pandoc_filename"
+wget "$pandoc_url"
 tar xvzf "$pandoc_filename" --strip-components 1 -C '/usr/local'
 rm -rf "$pandoc_filename"
 dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core
