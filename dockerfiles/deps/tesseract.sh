@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -ex
 
 dnf install -y opencv opencv* zlib zlib-devel perl-core clang libpng libpng-devel libtiff libtiff-devel libwebp libwebp-devel libjpeg libjpeg-devel libjpeg-turbo-devel git-core libtool pkgconfig xz
