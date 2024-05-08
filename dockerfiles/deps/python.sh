@@ -44,7 +44,7 @@ cd /tmp/Python-$PYTHON_VERSION &&
   rm -rf /tmp/Python-$PYTHON_VERSION
 
 # Upgrade pip
-python3.10 -m pip install --upgrade pip
+# python3.10 -m pip install --upgrade pip # temporarily comment out
 
 # dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel
 # dnf -y install python-pip
