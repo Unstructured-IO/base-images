@@ -6,43 +6,42 @@ set -ex
 RUN dnf groupinstall -y "Development Tools"
 
 # Install necessary dependencies
-RUN dnf install -y  --allowerasing  \
-gcc \
-make \
-curl \
-tar \
-xz \
-zlib-devel \
-sqlite \
-sqlite-devel 
+RUN dnf install -y --allowerasing \
+  gcc \
+  make \
+  curl \
+  tar \
+  xz \
+  zlib-devel \
+  sqlite \
+  sqlite-devel
 
 # Download SQLite source code
 WORKDIR /tmp
-RUN curl -O https://www.sqlite.org/2024/sqlite-autoconf-3450300.tar.gz \
-&& tar xvf sqlite-autoconf-3450300.tar.gz \
-&& rm sqlite-autoconf-3450300.tar.gz
+RUN curl -O https://www.sqlite.org/2024/sqlite-autoconf-3450300.tar.gz &&
+  tar xvf sqlite-autoconf-3450300.tar.gz &&
+  rm sqlite-autoconf-3450300.tar.gz
 
 # Compile and install SQLite
 WORKDIR /tmp/sqlite-autoconf-3450300
-RUN ./configure \
-&& make \
-&& make install \
-&& rm -rf /tmp/sqlite-autoconf-3450300
+RUN ./configure &&
+  make &&
+  make install &&
+  rm -rf /tmp/sqlite-autoconf-3450300
 
 # Download Python source code
 ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PYTHON_VERSION 3.10.13
-RUN curl -o /tmp/python.tar.xz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz \
-&& tar -xf /tmp/python.tar.xz -C /tmp \
-&& rm /tmp/python.tar.xz
-
+RUN curl -o /tmp/python.tar.xz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz &&
+  tar -xf /tmp/python.tar.xz -C /tmp &&
+  rm /tmp/python.tar.xz
 
 # Compile Python with custom SQLite
-RUN cd /tmp/Python-$PYTHON_VERSION \
-    && ./configure --enable-optimizations \
-    && make -j$(nproc) \
-    && make altinstall \
-    && rm -rf /tmp/Python-$PYTHON_VERSION
+RUN cd /tmp/Python-$PYTHON_VERSION &&
+  ./configure --enable-optimizations &&
+  make -j$(nproc) &&
+  make altinstall &&
+  rm -rf /tmp/Python-$PYTHON_VERSION
 
 # Upgrade pip
 RUN python3.10 -m pip install --upgrade pip
