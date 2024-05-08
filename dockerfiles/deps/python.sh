@@ -31,7 +31,7 @@ cd /tmp/sqlite-autoconf-3450300
 
 # Download Python source code
 export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-export PYTHON_VERSION 3.10.13
+export PYTHON_VERSION=3.10.13
 curl -o /tmp/python.tar.xz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz &&
   tar -xf /tmp/python.tar.xz -C /tmp &&
   rm /tmp/python.tar.xz
