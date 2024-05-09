@@ -21,7 +21,7 @@ cd /tmp/sqlite-autoconf-3450300
 && rm -rf /tmp/sqlite-autoconf-3450300
 
 cd ~ # Move to home directory to install Python
-
+ORIGINAL_LD_PATH=$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 
 curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
@@ -36,6 +36,9 @@ ln -s /usr/local/bin/python3.10 /usr/local/bin/python3
 # (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
 rpm --nodeps -e python3-setuptools-53.0.0-12.el9.noarch
 rm -rf /usr/local/lib/python3.9/site-packages/setuptools
+# Restore LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$ORIGINAL_LD_PATH
+
 dnf -y groupremove "Development Tools"
 rm -rf /var/cache/yum/*
 dnf clean all
