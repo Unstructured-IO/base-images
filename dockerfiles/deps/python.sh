@@ -2,13 +2,24 @@
 
 set -ex
 
-dnf -y groupinstall "Development Tools"
-dnf -y groupremove "Development Tools" --skip-broken
-
 dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel
 dnf -y install python-pip
 pip3.9 install --upgrade setuptools pip
 dnf -y groupinstall "Development Tools"
+
+# Download SQLite source code
+WORKDIR /tmp
+RUN curl -O https://www.sqlite.org/2024/sqlite-autoconf-3450300.tar.gz \
+&& tar xvf sqlite-autoconf-3450300.tar.gz \
+&& rm sqlite-autoconf-3450300.tar.gz
+
+# Compile and install SQLite
+WORKDIR /tmp/sqlite-autoconf-3450300
+RUN ./configure \
+&& make \
+&& make install \
+&& rm -rf /tmp/sqlite-autoconf-3450300
+
 curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
 tar -xzf Python-3.10.13.tgz
 cd Python-3.10.13/ || exit 1
