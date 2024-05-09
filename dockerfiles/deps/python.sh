@@ -62,6 +62,7 @@ cd /tmp/Python-$PYTHON_VERSION &&
 # # (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
 # rpm --nodeps -e python3-setuptools-53.0.0-12.el9.noarch
 # rm -rf /usr/local/lib/python3.9/site-packages/setuptools
+dnf -v --refresh # see if I can figure out why this is failing
 dnf -y groupremove "Development Tools"
 rm -rf /var/cache/yum/*
 dnf clean all
