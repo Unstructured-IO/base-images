@@ -22,6 +22,8 @@ cd /tmp/sqlite-autoconf-3450300
 
 cd ~ # Move to home directory to install Python
 
+export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+
 curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
 tar -xzf Python-3.10.13.tgz
 cd Python-3.10.13/ || exit 1
