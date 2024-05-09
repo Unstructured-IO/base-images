@@ -25,7 +25,7 @@ ORIGINAL_LD_PATH=$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 
 export PYTHON_VERSION=3.10.13
-RUN curl -o /tmp/python.tar.xz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz \
+curl -o /tmp/python.tar.xz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz \
 && tar -xf /tmp/python.tar.xz -C /tmp \
 && rm /tmp/python.tar.xz
 
