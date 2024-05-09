@@ -8,14 +8,14 @@ pip3.9 install --upgrade setuptools pip
 dnf -y groupinstall "Development Tools"
 
 # Download SQLite source code
-WORKDIR /tmp
-RUN curl -O https://www.sqlite.org/2024/sqlite-autoconf-3450300.tar.gz \
+cd /tmp
+curl -O https://www.sqlite.org/2024/sqlite-autoconf-3450300.tar.gz \
 && tar xvf sqlite-autoconf-3450300.tar.gz \
 && rm sqlite-autoconf-3450300.tar.gz
 
 # Compile and install SQLite
-WORKDIR /tmp/sqlite-autoconf-3450300
-RUN ./configure \
+cd /tmp/sqlite-autoconf-3450300
+./configure \
 && make \
 && make install \
 && rm -rf /tmp/sqlite-autoconf-3450300
