@@ -42,3 +42,7 @@ export LD_LIBRARY_PATH=$ORIGINAL_LD_PATH
 dnf -y groupremove "Development Tools"
 rm -rf /var/cache/yum/*
 dnf clean all
+
+echo "*******************************************"
+python3.10 -c "import sqlite3; print(sqlite3.sqlite_version)"
+
