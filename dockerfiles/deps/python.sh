@@ -2,8 +2,6 @@
 
 set -ex
 
-# Install development tools
-dnf groupinstall -y "Development Tools"
 
 # Install necessary dependencies
 dnf install -y --allowerasing \
@@ -15,6 +13,9 @@ dnf install -y --allowerasing \
   zlib-devel \
   sqlite \
   sqlite-devel
+
+# Install development tools moving this to see if above causes problem
+dnf groupinstall -y "Development Tools"
 
 # Download SQLite source code
 cd /tmp
