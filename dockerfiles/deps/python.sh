@@ -49,7 +49,7 @@ cd ~
 # cd ..
 # rm -rf Python-3.10.13*
 # pip3.10 install --upgrade setuptools pip
-# ln -s /usr/local/bin/python3.10 /usr/local/bin/python3
+ln -s /usr/local/bin/python3.10 /usr/local/bin/python3
 # # (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
 # rpm --nodeps -e python3-setuptools-53.0.0-12.el9.noarch
 # rm -rf /usr/local/lib/python3.9/site-packages/setuptools
