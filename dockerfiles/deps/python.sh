@@ -36,8 +36,10 @@ cd /tmp/Python-$PYTHON_VERSION \
     && make altinstall \
     && rm -rf /tmp/Python-$PYTHON_VERSION
 
+cd ~
+
 # Upgrade pip
-python3.10 -m pip install --upgrade pip
+#python3.10 -m pip install --upgrade pip
 
 # curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
 # tar -xzf Python-3.10.13.tgz
