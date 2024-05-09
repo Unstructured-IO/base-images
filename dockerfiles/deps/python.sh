@@ -3,7 +3,7 @@
 set -ex
 
 dnf -y groupinstall "Development Tools"
-dnf -y groupremove "Development Tools"
+dnf -y groupremove "Development Tools" --skip-broken
 
 dnf -y install bzip2-devel libffi-devel make git sqlite-devel openssl-devel
 dnf -y install python-pip
