@@ -24,18 +24,34 @@ cd ~ # Move to home directory to install Python
 ORIGINAL_LD_PATH=$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 
-curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
-tar -xzf Python-3.10.13.tgz
-cd Python-3.10.13/ || exit 1
-./configure --enable-optimizations
-make altinstall
-cd ..
-rm -rf Python-3.10.13*
-pip3.10 install --upgrade setuptools pip
-ln -s /usr/local/bin/python3.10 /usr/local/bin/python3
-# (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
-rpm --nodeps -e python3-setuptools-53.0.0-12.el9.noarch
-rm -rf /usr/local/lib/python3.9/site-packages/setuptools
+export PYTHON_VERSION=3.10.13
+RUN curl -o /tmp/python.tar.xz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz \
+&& tar -xf /tmp/python.tar.xz -C /tmp \
+&& rm /tmp/python.tar.xz
+
+# Compile Python with custom SQLite
+cd /tmp/Python-$PYTHON_VERSION \
+    && ./configure --enable-optimizations \
+    && make -j$(nproc) \
+    && make altinstall \
+    && rm -rf /tmp/Python-$PYTHON_VERSION
+
+# Upgrade pip
+python3.10 -m pip install --upgrade pip
+
+# curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
+# tar -xzf Python-3.10.13.tgz
+# cd Python-3.10.13/ || exit 1
+# ./configure --enable-optimizations
+# make altinstall
+# cd ..
+# rm -rf Python-3.10.13*
+# pip3.10 install --upgrade setuptools pip
+# ln -s /usr/local/bin/python3.10 /usr/local/bin/python3
+# # (Trevor) Setuptools for 3.9 has vulns, so we need to remove it
+# rpm --nodeps -e python3-setuptools-53.0.0-12.el9.noarch
+# rm -rf /usr/local/lib/python3.9/site-packages/setuptools
+
 # Restore LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$ORIGINAL_LD_PATH
 
