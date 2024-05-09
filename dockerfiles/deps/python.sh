@@ -20,6 +20,8 @@ cd /tmp/sqlite-autoconf-3450300
 && make install \
 && rm -rf /tmp/sqlite-autoconf-3450300
 
+cd ~ # Move to home directory to install Python
+
 curl -O https://www.python.org/ftp/python/3.10.13/Python-3.10.13.tgz
 tar -xzf Python-3.10.13.tgz
 cd Python-3.10.13/ || exit 1
