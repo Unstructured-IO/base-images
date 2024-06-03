@@ -44,8 +44,8 @@ jobs:
         if: matrix.docker-platform == 'linux/amd64' && matrix.images == 'wolfi-base'
         run: make docker-dl-packages
       - name: Build base images
-        run: |
-          make build-base-images
+        if: !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base')
+        run: make build-base-images
         env:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
           DOCKERFILE: ${{ matrix.images }}
