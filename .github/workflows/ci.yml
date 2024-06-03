@@ -41,6 +41,9 @@ jobs:
           password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - name: Download APKs for chainguard/wolfi-base
+        if: matrix.docker-platform == 'linux/amd64' && matrix.images == 'wolfi-base'
+        run: make docker-dl-packages
       - name: Build base images
         run: |
           make build-base-images

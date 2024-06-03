@@ -8,6 +8,11 @@ CI:= $(shell echo $(CI))
 help: Makefile
 	@sed -n 's/^\(## \)\([a-zA-Z]\)/\2/p' $<
 
+# docker-dl-packages:		download all the APK packages for Alpine Linux
+.PHONY: docker-dl-packages
+docker-dl-packages:
+	@scripts/docker-dl-packages.sh
+
 ## build-base-images:		build all the base images defined in this repo
 .PHONY: build-base-images
 build-base-images:
