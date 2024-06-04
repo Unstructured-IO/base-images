@@ -23,6 +23,7 @@ jobs:
 
   build-images:
     strategy:
+      fail-fast: false
       matrix:
         docker-platform: ["linux/arm64", "linux/amd64"]
         images: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
