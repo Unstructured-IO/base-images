@@ -53,15 +53,13 @@ jobs:
           DOCKER_PLATFORM: linux/${{ matrix.architecture }}
           DOCKERFILE: ${{ matrix.image }}
           CI: "true"
-      - name: Scan image
-        uses: anchore/scan-action@v3
-        env:
-          ARCH: ${{ format(matrix.architecture, 'linux/', '') }}
-        with:
-          image: "$DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-${{ matrix.architecture }}-$SHORT_SHA"
-          severity-cutoff: high
       - name: Print images
         run: docker images
+      - name: Scan image
+        uses: anchore/scan-action@v3
+        with:
+          image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
+          severity-cutoff: high
 
   publish-images:
     strategy:
