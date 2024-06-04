@@ -26,6 +26,9 @@ jobs:
       matrix:
         docker-platform: ["linux/arm64", "linux/amd64"]
         images: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
+        exclude:
+          - docker-platform: linux/arm64
+            images: wolfi-base
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
@@ -43,17 +46,13 @@ jobs:
       - name: Download APKs for chainguard/wolfi-base
         if: matrix.docker-platform == 'linux/amd64' && matrix.images == 'wolfi-base'
         run: make docker-dl-packages
-      - name: Build base images (except Wolfi-based arm64)
-        if: ${{ !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base') }}
-        run: |
-          make build-base-images
-          echo "::set-output name=step-skipped::false"
+      - name: Build base images
+        run: make build-base-images
         env:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
           DOCKERFILE: ${{ matrix.images }}
           CI: "true"
-      - name: Scan image (except Wolfi-based arm64)
-        if: ${{ !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base') }}
+      - name: Scan image
         uses: anchore/scan-action@v3
         with:
           image: "$DOCKER_BUILD_REPOSITORY:$ARCH-$SHORT_SHA"
