@@ -3,7 +3,7 @@ FROM cgr.dev/chainguard/wolfi-base:latest
 COPY ./docker-packages/*.apk packages/
 
 USER root
-RUN apk update && apk add py3.11-pip mesa-gl glib cmake libreoffice bash libmagic && \
+RUN apk update && apk add py3.11-pip mesa-gl glib cmake libreoffice bash libmagic wget && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
     apk add --allow-untrusted packages/leptonica-1.83.0-r0.apk && \
