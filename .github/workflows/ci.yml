@@ -43,8 +43,8 @@ jobs:
       - name: Download APKs for chainguard/wolfi-base
         if: matrix.docker-platform == 'linux/amd64' && matrix.images == 'wolfi-base'
         run: make docker-dl-packages
-      - name: Build base images
-        if: !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base')
+      - name: Build base images (except Wolfi-based arm64)
+        if: ${{ !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base') }}
         run: make build-base-images
         env:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
