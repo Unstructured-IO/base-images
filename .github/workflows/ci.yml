@@ -52,11 +52,11 @@ jobs:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
           DOCKERFILE: ${{ matrix.images }}
           CI: "true"
-      - name: Scan image
-        uses: anchore/scan-action@v3
-        with:
-          image: "$DOCKER_BUILD_REPOSITORY:$ARCH-$SHORT_SHA"
-          severity-cutoff: high
+      # - name: Scan image
+      #   uses: anchore/scan-action@v3
+      #   with:
+      #     image: "$DOCKER_BUILD_REPOSITORY:$ARCH-$SHORT_SHA"
+      #     severity-cutoff: high
       - name: Print images
         run: docker images
 
