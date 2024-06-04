@@ -45,12 +45,15 @@ jobs:
         run: make docker-dl-packages
       - name: Build base images (except Wolfi-based arm64)
         if: ${{ !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base') }}
-        run: make build-base-images
+        run: |
+          make build-base-images
+          echo "::set-output name=step-skipped::false"
         env:
           DOCKER_PLATFORM: ${{ matrix.docker-platform }}
           DOCKERFILE: ${{ matrix.images }}
           CI: "true"
-      - name: Scan image
+      - name: Scan image (except Wolfi-based arm64)
+        if: ${{ !(matrix.docker-platform == 'linux/arm64' && matrix.images == 'wolfi-base') }}
         uses: anchore/scan-action@v3
         with:
           image: "$DOCKER_BUILD_REPOSITORY:$ARCH-$SHORT_SHA"
