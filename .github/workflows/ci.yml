@@ -38,14 +38,14 @@ jobs:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v3
-      - name: Login to Quay.io
-        uses: docker/login-action@v2
-        with:
-          registry: quay.io
-          username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
-          password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      # - name: Login to Quay.io
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: quay.io
+      #     username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
+      #     password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
       - name: Download APKs for chainguard/wolfi-base
         if: matrix.architecture == 'amd64' && matrix.image == 'wolfi-base'
         run: make docker-dl-packages
