@@ -16,7 +16,7 @@ ARCH=$(uname -m)
 
 # Install kernel-devel and kernel-headers
 # dnf -y install kernel-devel kernel-headers
-dnf -y install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
+dnf -y install kernel-devel kernel-headers
 # Enable EPEL and install dkms
 dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 dnf -y install dkms
