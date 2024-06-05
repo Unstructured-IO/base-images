@@ -8,7 +8,7 @@ tar -xzvf leptonica-1.83.1.tar.gz
 cd leptonica-1.83.1 || exit
 ./configure && make && make install
 cd ..
-wget http://mirror.squ.edu.om/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz
+wget https://mirror.team-cymru.com/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz
 tar -xvf autoconf-archive-2017.09.28.tar.xz
 cd autoconf-archive-2017.09.28 || exit
 ./configure && make && make install
