@@ -42,8 +42,8 @@ jobs:
       #     registry: quay.io
       #     username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
       #     password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       - name: Download APKs for chainguard/wolfi-base
         if: matrix.architecture == 'amd64' && matrix.image == 'wolfi-base'
         run: make docker-dl-packages
