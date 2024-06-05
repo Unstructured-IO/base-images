@@ -28,7 +28,7 @@ jobs:
         # architecture: ["arm64", "amd64"]
         architecture: ["amd64"]
         # image: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
-        image: ["wolfi-base", "rocky9.2-10-gpu"]
+        image: ["wolfi-base", "rocky9.2-10-cpu"]
         exclude:
           - architecture: arm64
             image: wolfi-base
