@@ -15,8 +15,8 @@ dnf -y install gcc 'dnf-command(config-manager)'
 ARCH=$(uname -m)
 
 # Install kernel-devel and kernel-headers
-dnf -y install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
-
+# dnf -y install kernel-devel kernel-headers
+dnf -y install kernel-devel-5.14.0-427.18.1.el9_4.x86_64 kernel-headers-5.14.0-427.18.1.el9_4.x86_64
 # Enable EPEL and install dkms
 dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 dnf -y install dkms
