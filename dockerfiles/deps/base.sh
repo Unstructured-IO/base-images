@@ -14,6 +14,14 @@ dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-co
 dnf -y install gcc 'dnf-command(config-manager)'
 ARCH=$(uname -m)
 
+# Install kernel-devel and kernel-headers
+dnf -y install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
+
+# Enable EPEL and install dkms
+dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+dnf -y install dkms
+
+# https://docs.nvidia.com/cuda/cuda-installation-guide-linux/
 # Only install CUDA if GPU enabled
 if [[ "$GPU_ENABLED" == "true" ]]; then
   echo "Installing CUDA dependencies"
