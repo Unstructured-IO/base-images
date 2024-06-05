@@ -11,6 +11,7 @@ dnf -y update
 dnf -y upgrade
 dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11
 
+dnf -y install gcc 'dnf-command(config-manager)'
 ARCH=$(uname -m)
 
 # Only install CUDA if GPU enabled
@@ -18,6 +19,7 @@ if [[ "$GPU_ENABLED" == "true" ]]; then
   echo "Installing CUDA dependencies"
   if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
+    dnf module install nvidia-driver:latest-dkms
     dnf -y install cuda-11-8
   else
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/cross-linux-sbsa/cuda-rhel9-cross-linux-sbsa.repo
@@ -26,7 +28,7 @@ if [[ "$GPU_ENABLED" == "true" ]]; then
 else
   echo "Skipping CUDA installation"
 fi
-
+dnf clean expire-cache
 dnf -y install epel-release
 
 # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
