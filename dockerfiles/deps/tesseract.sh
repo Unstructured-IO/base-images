@@ -23,7 +23,8 @@ cd ..
 git clone https://github.com/tesseract-ocr/tessdata.git
 cp tessdata/*.traineddata /usr/local/share/tessdata
 rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.83.1*
-dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool zlib-devel pkgconfig xz
+dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool xz
+# zlib-devel pkgconfig
 
 # General cleanup
 rm -rf /var/cache/yum/*
