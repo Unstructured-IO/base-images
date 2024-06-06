@@ -31,7 +31,6 @@ else
   echo "Skipping CUDA installation"
 fi
 
-
 # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
 cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo
 dnf config-manager --enable crb
