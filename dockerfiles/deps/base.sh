@@ -18,11 +18,7 @@ if [[ "$GPU_ENABLED" == "true" ]]; then
   echo "Installing CUDA dependencies"
   if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
-    # dnf -y install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
-    dnf -y install nvidia-driver nvidia-settings
-    dnf -y install cuda-driver
-    dnf -y install cuda-toolkit
-    # dnf -y install cuda-11-8
+    dnf -y install nvidia-driver nvidia-settings cuda-driver cuda-toolkit
   else
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/cross-linux-sbsa/cuda-rhel9-cross-linux-sbsa.repo
     dnf -y install cuda-cross-sbsa-11-8
