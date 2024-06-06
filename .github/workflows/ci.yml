@@ -55,7 +55,7 @@ jobs:
           CI: "true"
       - name: Print images
         run: docker images
-      - name: Scan image
+      - name: Scan image for vulnerabilities
         uses: anchore/scan-action@v3
         with:
           image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
