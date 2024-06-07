@@ -35,6 +35,13 @@ jobs:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v3
+      - name: Login to Quay.io
+        # build-base-images pushes images to quay.io when on the main branch
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Download APKs for chainguard/wolfi-base
