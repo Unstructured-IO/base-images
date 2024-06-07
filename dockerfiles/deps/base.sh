@@ -7,8 +7,8 @@ PANDOC_VERSION=${PANDOC_VERSION:-"3.1.9"}
 
 echo "GPU enabled: $GPU_ENABLED"
 
-dnf -y update
-dnf -y upgrade
+dnf -y update && dnf -y upgrade
+dnf -y install epel-release
 dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11
 
 ARCH=$(uname -m)
@@ -18,7 +18,7 @@ if [[ "$GPU_ENABLED" == "true" ]]; then
   echo "Installing CUDA dependencies"
   if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
-    dnf -y install cuda-11-8
+    dnf -y install nvidia-driver nvidia-settings cuda-driver cuda-toolkit
   else
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/cross-linux-sbsa/cuda-rhel9-cross-linux-sbsa.repo
     dnf -y install cuda-cross-sbsa-11-8
@@ -26,8 +26,6 @@ if [[ "$GPU_ENABLED" == "true" ]]; then
 else
   echo "Skipping CUDA installation"
 fi
-
-dnf -y install epel-release
 
 # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
 cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/Rocky-Devel.repo

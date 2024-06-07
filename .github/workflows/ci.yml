@@ -24,36 +24,42 @@ jobs:
   build-images:
     strategy:
       matrix:
-        docker-platform: ["linux/arm64", "linux/amd64"]
-        images: ["rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
+        architecture: ["arm64", "amd64"]
+        image: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
+        exclude:
+          - architecture: arm64
+            image: wolfi-base
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v3
-      - name: Login to Quay.io
-        uses: docker/login-action@v2
-        with:
-          registry: quay.io
-          username: ${{ secrets.QUAY_IO_ROBOT_USERNAME }}
-          password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - name: Download APKs for chainguard/wolfi-base
+        if: matrix.architecture == 'amd64' && matrix.image == 'wolfi-base'
+        run: make docker-dl-wolfi-packages
       - name: Build base images
-        run: |
-          make build-base-images
+        run: make build-base-images
         env:
-          DOCKER_PLATFORM: ${{ matrix.docker-platform }}
-          DOCKERFILE: ${{ matrix.images }}
+          DOCKER_PLATFORM: linux/${{ matrix.architecture }}
+          DOCKERFILE: ${{ matrix.image }}
           CI: "true"
       - name: Print images
         run: docker images
+      - name: Scan image for vulnerabilities
+        uses: anchore/scan-action@v3
+        with:
+          image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
+          severity-cutoff: high
+          fail-build: ${{ matrix.image == 'wolfi-base' }}
+          output-format: table
 
   publish-images:
     strategy:
       matrix:
-        images: ["rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
+        image: ["wolfi-base", "rocky9.2-10-gpu","rocky9.2-10-slim", "rocky9.2-10-cpu" ]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
@@ -71,18 +77,18 @@ jobs:
         password: ${{ secrets.QUAY_IO_ROBOT_TOKEN }}
     - name: Pull AMD image
       run: |
-        docker pull --platform linux/amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64-$SHORT_SHA
-        docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64
-        docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64
+        docker pull --platform linux/amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64-$SHORT_SHA
+        docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
+        docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
     - name: Pull ARM image
       run: |
-        docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64-$SHORT_SHA
-        docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
-        docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
+        docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA
+        docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
+        docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
     - name: Push multiarch manifest
       run: |
-        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }} $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.images }}-arm64
-        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.images }}
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
+        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }}
 
   shellcheck:
     runs-on: ubuntu-latest

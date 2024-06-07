@@ -8,6 +8,11 @@ CI:= $(shell echo $(CI))
 help: Makefile
 	@sed -n 's/^\(## \)\([a-zA-Z]\)/\2/p' $<
 
+# docker-dl-wolfi-packages:		download APKs for the wolfi-based image
+.PHONY: docker-dl-wolfi-packages
+docker-dl-wolfi-packages:
+	@scripts/docker-dl-wolfi-packages.sh
+
 ## build-base-images:		build all the base images defined in this repo
 .PHONY: build-base-images
 build-base-images:

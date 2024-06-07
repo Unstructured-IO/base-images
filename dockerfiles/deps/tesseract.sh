@@ -8,7 +8,7 @@ tar -xzvf leptonica-1.83.1.tar.gz
 cd leptonica-1.83.1 || exit
 ./configure && make && make install
 cd ..
-wget http://mirror.squ.edu.om/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz
+wget https://mirror.team-cymru.com/gnu/autoconf-archive/autoconf-archive-2017.09.28.tar.xz
 tar -xvf autoconf-archive-2017.09.28.tar.xz
 cd autoconf-archive-2017.09.28 || exit
 ./configure && make && make install
@@ -23,7 +23,7 @@ cd ..
 git clone https://github.com/tesseract-ocr/tessdata.git
 cp tessdata/*.traineddata /usr/local/share/tessdata
 rm -rf /tesseract-ocr /tessdata /autoconf-archive-2017.09.28* /leptonica-1.83.1*
-dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool zlib-devel pkconfig xz
+dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel libjpeg-devel libjpeg-turbo-devel git-core libtool xz
 
 # General cleanup
 rm -rf /var/cache/yum/*
