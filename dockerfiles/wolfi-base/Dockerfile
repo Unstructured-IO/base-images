@@ -16,5 +16,9 @@ RUN apk update && apk add py3.11-pip mesa-gl glib cmake libreoffice bash libmagi
     chmod +x /usr/bin/libreoffice && \
     chmod +x /usr/bin/soffice
 
+# NOTE(mike): This dummy call is a workaround for libreoffice not executing commands properly at the start of the container.
+# The issue is decribed here: https://github.com/Unstructured-IO/unstructured/issues/3105
+# soffice running twice explanation: https://github.com/jodconverter/jodconverter/issues/48#issuecomment-1863864333
+RUN /usr/bin/soffice --headless || [ $? -eq 81 ] || exit 1
 ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 CMD ["/bin/bash"]
