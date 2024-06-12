@@ -20,5 +20,14 @@ RUN apk update && apk add py3.11-pip mesa-gl glib cmake libreoffice bash libmagi
     # soffice running twice explanation: https://github.com/jodconverter/jodconverter/issues/48#issuecomment-1863864333
     /usr/bin/soffice --headless || [ $? -eq 81 ] || exit 1
 
+ARG NB_UID=1000
+ARG NB_USER=notebook-user
+RUN addgroup --gid ${NB_UID} ${NB_USER} && \
+    adduser --disabled-password --gecos "" --uid ${NB_UID} -G ${NB_USER} ${NB_USER}
+
+ENV USER ${NB_USER}
+ENV HOME /home/${NB_USER}
 ENV TESSDATA_PREFIX=/usr/local/share/tessdata
+USER ${NB_USER}
+WORKDIR ${HOME}
 CMD ["/bin/bash"]
