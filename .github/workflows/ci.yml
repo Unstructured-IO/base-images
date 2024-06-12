@@ -88,14 +88,21 @@ jobs:
         docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
         docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
     - name: Pull ARM image
+      # wolfi-base is currently for AMD64 only
+      if: matrix.image != 'wolfi-base'
       run: |
         docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA
         docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
         docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
     - name: Push multiarch manifest
       run: |
-        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
-        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }}
+        run: |
+          if [ "${{ matrix.image }}" = "wolfi-base" ]; then
+            docker manifest create $docker_repository/$docker_image:${{ matrix.image }} $docker_build_repository:${{ matrix.image }}-amd64
+          else
+            docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
+          fi
+          docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }}
 
   shellcheck:
     runs-on: ubuntu-latest
