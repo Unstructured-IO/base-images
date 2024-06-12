@@ -97,10 +97,10 @@ jobs:
     - name: Push multiarch manifest
       run: |
         run: |
-          if [ "${{ matrix.image }}" = "wolfi-base" ]; then
-            docker manifest create $docker_repository/$docker_image:${{ matrix.image }} $docker_build_repository:${{ matrix.image }}-amd64
-          else
+          if [ "${{ matrix.image }}" != "wolfi-base" ]; then
             docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
+          else
+            docker manifest create $docker_repository/$docker_image:${{ matrix.image }} $docker_build_repository:${{ matrix.image }}-amd64
           fi
           docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }}
 
