@@ -6,7 +6,7 @@ COPY ./scripts/install-libreoffice-wolfi.sh install-libreoffice-wolfi.sh
 USER root
 RUN apk update && apk add py3.11-pip mesa-gl glib cmake bash libmagic wget && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
-    apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
+    # apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
     apk add --allow-untrusted packages/leptonica-1.83.0-r0.apk && \
     apk add --allow-untrusted packages/tesseract-5.3.2-r0.apk && \
     apk cache clean && \
