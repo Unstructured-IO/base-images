@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM registry.access.redhat.com/ubi9/ubi:9.4-947.1717074712
+FROM redhat/ubi9:latest
 
 COPY ./dockerfiles/deps/ /deps/
 
