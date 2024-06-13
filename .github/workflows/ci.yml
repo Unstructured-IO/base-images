@@ -42,7 +42,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Download APKs for chainguard/wolfi-base
-        if: matrix.architecture == 'amd64' && matrix.image == 'wolfi-base'
+        if: matrix.image == 'wolfi-base'
         run: make docker-dl-wolfi-packages
       - name: Build base images
         run: make build-base-images
