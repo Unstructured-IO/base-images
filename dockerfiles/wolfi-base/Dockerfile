@@ -3,11 +3,12 @@ FROM cgr.dev/chainguard/wolfi-base:latest
 COPY ./docker-packages/*.apk packages/
 
 USER root
-RUN apk update && apk add py3.11-pip mesa-gl glib cmake libreoffice bash libmagic wget && \
+RUN apk update && apk add py3.11-pip mesa-gl glib cmake bash libmagic wget && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
     apk add --allow-untrusted packages/leptonica-1.83.0-r0.apk && \
     apk add --allow-untrusted packages/tesseract-5.3.2-r0.apk && \
+    apk add --allow-untrusted packages/libreoffice-24-24.2.4.1-r0.67f8e014.apk && \
     mv /share/tessdata/configs /usr/local/share/tessdata/ && \
     mv /share/tessdata/tessconfigs /usr/local/share/tessdata/ && \
     ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/libreoffice && \
