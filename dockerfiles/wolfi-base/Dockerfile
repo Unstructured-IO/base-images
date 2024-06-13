@@ -10,10 +10,10 @@ RUN apk update && apk add py3.11-pip mesa-gl glib cmake bash libmagic wget && \
     apk add --allow-untrusted packages/leptonica-1.83.0-r0.apk && \
     apk add --allow-untrusted packages/tesseract-5.3.2-r0.apk && \
     apk cache clean && \
-    rm -rf packages && \
     mv /share/tessdata/configs /usr/local/share/tessdata/ && \
     mv /share/tessdata/tessconfigs /usr/local/share/tessdata/ && \
     /bin/bash install-libreoffice-wolfi.sh && \
+    rm -rf packages && \
     rm install-libreoffice-wolfi.sh
 
 ARG NB_UID=1000
