@@ -6,9 +6,10 @@ COPY ./dockerfiles/deps/ /deps/
 ARG DOCKERFILE="ubi9.4"
 
 RUN --mount=type=secret,id=redhat_pw,uid=0 \
-  [ -f /run/secrets/redhat_pw ] && \
+  --mount=type=secret,id=redhat_user,uid=0 \
+  [ -f /run/secrets/redhat_pw ] && [ -f /run/secrets/redhat_user ] && \
   subscription-manager register \
-    --username mrobinson-unstructured \
+    --username $(cat /run/secrets/redhat_user) \
     --password $(cat /run/secrets/redhat_pw)  && \
   GPU_ENABLED=false /deps/base.sh  && \
   /deps/tesseract.sh && \
