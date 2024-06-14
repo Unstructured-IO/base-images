@@ -36,12 +36,15 @@ DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
   --build-arg PIP_VERSION="$PIP_VERSION"
   --build-arg BUILDKIT_INLINE_CACHE=1
   --progress plain
-  --secret id=redhat_pw,env=REDHAT_PW
   -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set
 if [ -n "${DOCKER_PLATFORM:-}" ]; then
   DOCKER_BUILD_CMD+=("--platform=$DOCKER_PLATFORM")
+fi
+
+if [ "$DOCKERFILE" = "ubi9.4" ]; then
+  DOCKER_BUILD_CMD+=("--secret id=redhat_pw,env=REDHAT_PW")
 fi
 
 DOCKER_BUILDKIT=1 "${DOCKER_BUILD_CMD[@]}"
