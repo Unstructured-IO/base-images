@@ -13,7 +13,7 @@ if [ "$DOCKERFILE" != "ubi9.4" ]; then
   dnf -y install epel-release
   REPO_NAME="Rocky-Devel"
 else
-  dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+  dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
   REPO_NAME="redhat"
 fi
 dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11
