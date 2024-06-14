@@ -13,7 +13,7 @@ if [ "$DOCKERFILE" != "ubi9.4" ]; then
   dnf -y install epel-release
   REPO_NAME="Rocky-Devel"
 else
-  REPO_NAME="ubi"
+  REPO_NAME="redhat"
 fi
 dnf -y install poppler-utils xz-devel wget tar make which mailcap dnf-plugins-core compat-openssl11
 
@@ -51,9 +51,7 @@ sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/"$REPO_NAME".repo
 wget "$pandoc_url"
 tar xvzf "$pandoc_filename" --strip-components 1 -C '/usr/local'
 rm -rf "$pandoc_filename"
-if [ "$DOCKERFILE" != "ubi9.4" ]; then
-  dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core
-fi
+dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core
 
 if [ "$DOCKERFILE" != "ubi9.4" ]; then
   sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/"$REPO_NAME".repo

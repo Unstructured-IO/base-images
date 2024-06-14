@@ -36,6 +36,7 @@ DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
   --build-arg PIP_VERSION="$PIP_VERSION"
   --build-arg BUILDKIT_INLINE_CACHE=1
   --progress plain
+  --secret id=redhat_pw,env=REDHAT_PW
   -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set

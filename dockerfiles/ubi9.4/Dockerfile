@@ -5,4 +5,13 @@ COPY ./dockerfiles/deps/ /deps/
 
 ARG DOCKERFILE="ubi9.4"
 
-RUN GPU_ENABLED=false /deps/base.sh  && /deps/tesseract.sh && /deps/python.sh && rm -r /deps
+RUN --mount=type=secret,id=redhat_pw,uid=0 \
+  [ -f /run/secrets/redhat_pw ] && \
+  subscription-manager register \
+    --username mrobinson-unstructured \
+    --password $(cat /run/secrets/redhat_pw)  && \
+  GPU_ENABLED=false /deps/base.sh  && \
+  /deps/tesseract.sh && \
+  /deps/python.sh && \
+  rm -r /deps && \
+  rm /etc/pki/entitlement/*.pem
