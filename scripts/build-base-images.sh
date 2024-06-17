@@ -31,7 +31,7 @@ if [ "$CI" == "false" ]; then
   BUILDX_COMMAND+=("--load")
 fi
 
-# shellcheck disable=SC2206
+# shellcheck disable=SC2206,SCC2054
 DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
   --build-arg PIP_VERSION="$PIP_VERSION"
   --build-arg BUILDKIT_INLINE_CACHE=1
