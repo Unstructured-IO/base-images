@@ -32,16 +32,22 @@ if [ "$CI" == "false" ]; then
 fi
 
 if [ "$DOCKERFILE" == "ubi9.4" ]; then
-  BUILDX_COMMAND+=("--secret id=redhat_pw,env=REDHAT_PW")
-  BUILDX_COMMAND+=("--secret id=redhat_user,env=REDHAT_USER")
+  # shellcheck disable=SC2206,SC2054
+  DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
+    --build-arg PIP_VERSION="$PIP_VERSION"
+    --build-arg BUILDKIT_INLINE_CACHE=1
+    --secret id=redhat_pw,env=REDHAT_PW
+    --secret id=redhat_user,env=REDHAT_USER
+    --progress plain
+    -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
+else
+  # shellcheck disable=SC2206
+  DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
+    --build-arg PIP_VERSION="$PIP_VERSION"
+    --build-arg BUILDKIT_INLINE_CACHE=1
+    --progress plain
+    -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 fi
-
-# shellcheck disable=SC2206
-DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
-  --build-arg PIP_VERSION="$PIP_VERSION"
-  --build-arg BUILDKIT_INLINE_CACHE=1
-  --progress plain
-  -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 
 # only build for specific platform if DOCKER_PLATFORM is set
 if [ -n "${DOCKER_PLATFORM:-}" ]; then
