@@ -57,7 +57,7 @@ rm -rf "$pandoc_filename"
 dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core
 
 sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/"$REPO_NAME".repo
-rm -f /etc/yum.repos.d/"$REPO_NAME".repo
 # General cleanup
 rm -rf /var/cache/yum/*
+rm -f /etc/yum.repos.d/"$REPO_NAME".repo
 dnf clean all
