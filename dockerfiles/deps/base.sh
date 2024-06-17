@@ -34,10 +34,12 @@ else
   echo "Skipping CUDA installation"
 fi
 
-# This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
 if [ "$DOCKERFILE" != "ubi9.4" ]; then
+  # This is a fix for an bug where config-manager tries to modify a repo file with the incorrect name
   cp /etc/yum.repos.d/rocky-devel.repo /etc/yum.repos.d/"$REPO_NAME".repo
   dnf config-manager --enable crb
+else
+  subscription-manager repos --enable codeready-builder-for-rhel-9-x86_64-rpms
 fi
 
 # Needed for LibreOffice to install base components on aarch64
@@ -54,11 +56,8 @@ tar xvzf "$pandoc_filename" --strip-components 1 -C '/usr/local'
 rm -rf "$pandoc_filename"
 dnf -y install libreoffice-writer libreoffice-base libreoffice-impress libreoffice-draw libreoffice-math libreoffice-core
 
-if [ "$DOCKERFILE" != "ubi9.4" ]; then
-  sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/"$REPO_NAME".repo
-  rm -f /etc/yum.repos.d/"$REPO_NAME".repo
-  # General cleanup
-  rm -rf /var/cache/yum/*
-  dnf clean all
-fi
-
+sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/"$REPO_NAME".repo
+rm -f /etc/yum.repos.d/"$REPO_NAME".repo
+# General cleanup
+rm -rf /var/cache/yum/*
+dnf clean all
