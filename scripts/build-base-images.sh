@@ -31,12 +31,15 @@ if [ "$CI" == "false" ]; then
   BUILDX_COMMAND+=("--load")
 fi
 
-# shellcheck disable=SC2206,SC2054
+if [ "$DOCKERFILE" == "ubi9.4"]; then
+  BUILDX_COMMAND+=("--secret id=redhat_pw,env=REDHAT_PW")
+  BUILDX_COMMAND+=("--secret id=redhat_user,env=REDHAT_USER")
+fi
+
+# shellcheck disable=SC2206
 DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
   --build-arg PIP_VERSION="$PIP_VERSION"
   --build-arg BUILDKIT_INLINE_CACHE=1
-  --secret id=redhat_pw,env=REDHAT_PW
-  --secret id=redhat_user,env=REDHAT_USER
   --progress plain
   -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 
