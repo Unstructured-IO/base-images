@@ -31,7 +31,7 @@ if [ "$CI" == "false" ]; then
   BUILDX_COMMAND+=("--load")
 fi
 
-if [ "$DOCKERFILE" == "ubi9.4"]; then
+if [ "$DOCKERFILE" == "ubi9.4" ]; then
   BUILDX_COMMAND+=("--secret id=redhat_pw,env=REDHAT_PW")
   BUILDX_COMMAND+=("--secret id=redhat_user,env=REDHAT_USER")
 fi
