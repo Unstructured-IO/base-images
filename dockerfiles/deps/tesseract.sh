@@ -2,13 +2,6 @@
 
 set -ex
 
-if [ "$DOCKERFILE" != "ubi9.4" ]; then
-  REPO_NAME="Rocky-Devel"
-else
-  REPO_NAME="redhat"
-fi
-sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/"$REPO_NAME".repo
-
 dnf install -y opencv opencv* zlib zlib-devel perl-core clang libpng libpng-devel libtiff libtiff-devel libwebp libwebp-devel libjpeg libjpeg-devel libjpeg-turbo-devel git-core libtool pkgconfig xz
 wget https://github.com/DanBloomberg/leptonica/releases/download/1.83.1/leptonica-1.83.1.tar.gz
 tar -xzvf leptonica-1.83.1.tar.gz
@@ -36,5 +29,3 @@ dnf -y remove opencv* perl-core clang libpng-devel libtiff-devel libwebp-devel l
 rm -rf /var/cache/yum/*
 rm -rf /tmp/*
 dnf clean all
-
-sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/"$REPO_NAME".repo
