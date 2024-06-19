@@ -29,4 +29,14 @@ for file in "${files[@]}"; do
   wget "https://utic-public-cf.s3.amazonaws.com/$file" -P "$directory"
 done
 
+if [ "${ARCH}" = "arm64" ] || [ "${ARCH}" = "aarch64" ]; then
+  OLD_EXT="-aarch64.apk"
+  NEW_EXT=".apk"
+  for FILE in "$directory"/*"$OLD_EXT"; do
+    BASE_NAME="${FILE%$OLD_EXT}"
+    NEW_FILE="${BASE_NAME}${NEW_EXT}"
+    mv "$FILE" "$NEW_FILE"
+  done
+fi
+
 echo "Downloads complete."
