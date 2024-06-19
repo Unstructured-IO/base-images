@@ -26,9 +26,6 @@ jobs:
       matrix:
         architecture: ["arm64", "amd64"]
         image: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
-        exclude:
-          - architecture: arm64
-            image: wolfi-base
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
