@@ -1,5 +1,7 @@
 #!/bin/bash
 
-if [ "$ARCH" != "arm64" ] && [ "$ARCH" != "aarch64" ]; then
+ARCH=$(uname -m)
+
+if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
   /usr/bin/soffice --headless || [ $? -eq 81 ] || exit 1
 fi

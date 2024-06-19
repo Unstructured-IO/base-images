@@ -45,7 +45,6 @@ else
   DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
     --build-arg PIP_VERSION="$PIP_VERSION"
     --build-arg BUILDKIT_INLINE_CACHE=1
-    --build-arg ARCH="$ARCH"
     --progress plain
     -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 fi

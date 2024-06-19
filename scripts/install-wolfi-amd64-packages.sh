@@ -1,6 +1,8 @@
 #!/bin/bash
 
-if [ "$ARCH" != "arm64" ] && [ "$ARCH" != "aarch64" ]; then
+ARCH=$(uname -m)
+
+if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
   apk add --allow-untrusted packages/libreoffice-7.6.5-r0.apk &&
     mv /share/tessdata/configs /usr/local/share/tessdata/ &&
     mv /share/tessdata/tessconfigs /usr/local/share/tessdata/ &&
