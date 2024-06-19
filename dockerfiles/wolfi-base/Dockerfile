@@ -10,7 +10,7 @@ RUN apk update && apk add py3.11-pip mesa-gl glib cmake bash libmagic wget && \
     apk add --allow-untrusted packages/tesseract-5.3.2-r0.apk && \
     # apk add --allow-untrusted packages/libreoffice-7.6.5-r0.apk && \
     apk cache clean && \
-    rm -rf packages && \
+    rm -rf packages
     # mv /share/tessdata/configs /usr/local/share/tessdata/ && \
     # mv /share/tessdata/tessconfigs /usr/local/share/tessdata/
     # ln -s /usr/local/lib/libreoffice/program/soffice.bin /usr/bin/libreoffice && \
