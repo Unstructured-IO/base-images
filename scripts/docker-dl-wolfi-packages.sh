@@ -33,6 +33,7 @@ if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   OLD_EXT="-aarch64.apk"
   NEW_EXT=".apk"
   for FILE in "$directory"/*"$OLD_EXT"; do
+    # shellcheck disable=SC2295
     BASE_NAME="${FILE%$OLD_EXT}"
     NEW_FILE="${BASE_NAME}${NEW_EXT}"
     mv "$FILE" "$NEW_FILE"
