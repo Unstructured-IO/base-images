@@ -1,0 +1,35 @@
+package:
+  name: pandoc
+  version: 3.1.8
+  description: pandoc compiled package for Wolfi based distros
+  target-architecture:
+    - x86_64
+    - aarch64
+  copyright:
+    - license: Apache-2.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - wolfi-base
+      - wget
+      - gnutar
+      - gzip
+
+pipeline:
+  - runs: |
+      ARCH=$(uname -m)
+      if [ "$ARCH" = "x86_64" ]; then
+        ARCH="amd64"
+      elif [ "$ARCH" = "aarch64" ]; then
+        ARCH="arm64"
+      fi
+      wget "https://github.com/jgm/pandoc/releases/download/3.1.8/pandoc-3.1.8-linux-$ARCH.tar.gz"
+      mkdir -p ${{targets.destdir}}/usr/local
+      tar -xvf pandoc-3.1.8-linux-$ARCH.tar.gz --strip-components 1 -C "${{targets.destdir}}/usr/local"
