@@ -26,7 +26,7 @@ RUN addgroup --gid ${NB_UID} ${NB_USER} && \
 
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
-ENV TESSDATA_PREFIX=/usr/local/share/tessdata
+# ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 
 # NOTE(mike): This dummy call is a workaround for libreoffice not executing commands properly at the start of the container.
 # The issue is decribed here: https://github.com/Unstructured-IO/unstructured/issues/3105
