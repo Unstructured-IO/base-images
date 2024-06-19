@@ -34,7 +34,7 @@ ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 # It is crucial to run as a non-root user, otherwise the config file will be created in /root
 # Moreover, we expect the command to exit with code 81
 USER ${NB_USER}
-RUN /usr/bin/soffice --headless || [ $? -eq 81 ] || exit 1
+# RUN /usr/bin/soffice --headless || [ $? -eq 81 ] || exit 1
 
 WORKDIR ${HOME}
 CMD ["/bin/bash"]
