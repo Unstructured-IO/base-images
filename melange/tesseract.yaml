@@ -63,12 +63,15 @@ pipeline:
       cd tesseract
       cp /usr/local/include/leptonica/* ./include
       ./autogen.sh
-      ./configure --prefix="${{targets.destdir}}" --with-extra-libraries=/usr/local/lib --with-extra-includes=/usr/local/include
+      ./configure --prefix=/usr/local --with-extra-libraries=/usr/local/lib --with-extra-includes=/usr/local/include
       make -j$(nproc)
       make install
   - runs: |
       mkdir -p "${{targets.destdir}}"/usr/local/share/tessdata
       git clone https://github.com/tesseract-ocr/tessdata.git
       cp tessdata/*.traineddata "${{targets.destdir}}"/usr/local/share/tessdata
+      git clone https://github.com/tesseract-ocr/tessconfigs.git
+      cp -r tessconfigs/configs "${{targets.destdir}}"/usr/local/share/tessdata
+      cp -r tessconfigs/tessconfigs "${{targets.destdir}}"/usr/local/share/tessdata
 
 
