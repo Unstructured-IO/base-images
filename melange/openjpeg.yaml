@@ -1,0 +1,59 @@
+package:
+  name: openjpeg
+  version: 2.5.0
+  description: OpenJPEG library compiled package for Wolfi based distros
+  target-architecture:
+    - x86_64
+    - aarch64
+  copyright:
+    - license: 2-clauses * BSD License
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - boost-dev
+      - wolfi-base
+      - ca-certificates
+      - gcc
+      - gzip
+      - gnutar
+      - bash
+      - gcc-6
+      - linux-headers
+      - git
+      - autoconf
+      - coreutils
+      - build-base
+      - libtool
+      - automake
+      - make
+      - autoconf
+      - pkgconf-dev
+      - libjpeg-dev
+      - cmake
+      - freetype-dev
+      - fontconfig-dev
+      - libjpeg-turbo
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.0.tar.gz
+      expected-sha256: 0333806d6adecc6f7a91243b2b839ff4d2053823634d4f6ed7a59bc87409122a
+  - runs: |
+      mkdir source
+      mv * source || true
+      mkdir -p "${{targets.destdir}}"/usr/local/lib \
+        "${{targets.destdir}}"/usr/local/lib64 \
+        "${{targets.destdir}}"/usr/local/bin/ \
+        "${{targets.destdir}}"/usr/local/lib64  \
+        "${{targets.destdir}}"/usr/local/lib/openjpeg-2.5
+      cmake ./source -DCMAKE_BUILD_TYPE=Release
+      make -j$(nproc)
+      make install DESTDIR="${{targets.destdir}}"

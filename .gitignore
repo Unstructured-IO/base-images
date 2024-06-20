@@ -4,3 +4,4 @@
 
 # APK packages for the docker build
 docker-packages/*
+melange/packages/**

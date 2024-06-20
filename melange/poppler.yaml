@@ -1,0 +1,71 @@
+package:
+  name: poppler
+  version: 23.09.0
+  description: poppler compiled package for Wolfi based distros
+  target-architecture:
+    - x86_64
+    - aarch64
+  copyright:
+    - license: GNU General Public License v3.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+      - '@local ./packages'
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - boost-dev
+      - boost-static
+      - wolfi-base
+      - ca-certificates
+      - gcc
+      - openjpeg@local
+      - expat-dev
+      - bash
+      - tiff-dev
+      - libpng-dev
+      - curl-dev
+      - zlib-dev
+      - cairo-dev
+      - gcc-6
+      - linux-headers
+      - git
+      - ninja
+      - glib
+      - glib-dev
+      - glibc-dev
+      - autoconf
+      - coreutils
+      - build-base
+      - libtool
+      - automake
+      - make
+      - autoconf
+      - pkgconf-dev
+      - libjpeg-dev
+      - cmake
+      - freetype-dev
+      - fontconfig-dev
+      - libjpeg-turbo
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://poppler.freedesktop.org/poppler-23.09.0.tar.xz
+      expected-sha256: 80d1d44dd8bdf4ac1a47d56c5065075eb9991790974b1ed7d14b972acde88e55
+  - runs: |
+      tar -xf poppler-23.09.0.tar.xz
+      cd poppler-23.09.0/
+      mkdir source
+      mv * source || true
+      mkdir -p "${{targets.destdir}}"/usr/local/lib \
+        "${{targets.destdir}}"/usr/local/lib64 \
+        "${{targets.destdir}}"/usr/local/bin/
+      cmake ./source -DCMAKE_BUILD_TYPE=Release
+      make -j$(nproc)
+      make install DESTDIR="${{targets.destdir}}"
+

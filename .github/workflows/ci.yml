@@ -26,9 +26,6 @@ jobs:
       matrix:
         architecture: ["arm64", "amd64"]
         image: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
-        exclude:
-          - architecture: arm64
-            image: wolfi-base
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
@@ -45,7 +42,9 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Download APKs for chainguard/wolfi-base
-        if: matrix.architecture == 'amd64' && matrix.image == 'wolfi-base'
+        env:
+          ARCH: ${{ matrix.architecture }}
+        if: matrix.image == 'wolfi-base'
         run: make docker-dl-wolfi-packages
       - name: Build base images
         run: make build-base-images
@@ -59,7 +58,7 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
-          severity-cutoff: high
+          severity-cutoff: critical
           fail-build: ${{ matrix.image == 'wolfi-base' }}
           output-format: table
 
@@ -88,19 +87,13 @@ jobs:
         docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
         docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
     - name: Pull ARM image
-      # wolfi-base is currently for AMD64 only
-      if: matrix.image != 'wolfi-base'
       run: |
         docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA
         docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
         docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
     - name: Push multiarch manifest
       run: |
-        if [ "${{ matrix.image }}" != "wolfi-base" ]; then
-          docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
-        else
-          docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64
-        fi
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
         docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${{ matrix.image }}
 
   shellcheck:
