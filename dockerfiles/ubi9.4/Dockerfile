@@ -12,7 +12,7 @@ RUN --mount=type=secret,id=redhat_pw,uid=0 \
     --username $(cat /run/secrets/redhat_user) \
     --password $(cat /run/secrets/redhat_pw)  && \
   GPU_ENABLED=false /deps/base.sh  && \
-  # /deps/tesseract.sh && \
+  /deps/tesseract.sh && \
   /deps/python.sh && \
   rm -r /deps && \
   rm /etc/pki/entitlement/*.pem
