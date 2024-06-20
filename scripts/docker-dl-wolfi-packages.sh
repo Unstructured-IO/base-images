@@ -29,6 +29,8 @@ for file in "${files[@]}"; do
   wget "https://utic-public-cf.s3.amazonaws.com/$file" -P "$directory"
 done
 
+# NOTE(robinson) - renames the aarch64 specific APKs to replace -aarch.apk with .apk
+# so the apk add steps in the Dockerfile are unchanged between arm64 and amd64
 if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   OLD_EXT="-aarch64.apk"
   NEW_EXT=".apk"
