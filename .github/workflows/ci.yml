@@ -110,11 +110,6 @@ jobs:
       env:
         IMAGE_TAG="wolf-base-latest"
 
-  make-pr-to-downstream:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    needs: [publish-images]
-
   shellcheck:
     runs-on: ubuntu-latest
     steps:
