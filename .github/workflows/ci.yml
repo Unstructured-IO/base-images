@@ -71,7 +71,7 @@ jobs:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/main'
-    needs: [set-short-sha, build-images]
+    needs: [set-short-sha]
     steps:
     - uses: docker/setup-buildx-action@v1
     - name: Checkout code
