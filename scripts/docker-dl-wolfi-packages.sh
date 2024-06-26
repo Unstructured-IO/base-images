@@ -2,21 +2,14 @@
 
 if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   files=(
-    "openjpeg-2.5.0-r0-aarch64.apk"
     "poppler-23.09.0-r0-aarch64.apk"
-    "leptonica-1.83.0-r0-aarch64.apk"
     "pandoc-3.1.8-r0-aarch64.apk"
-    "tesseract-5.3.2-r0-aarch64.apk"
     "nltk_data.tgz"
   )
 else
   files=(
-    "libreoffice-7.6.5-r0.apk"
-    "openjpeg-2.5.0-r0.apk"
     "poppler-23.09.0-r0.apk"
-    "leptonica-1.83.0-r0.apk"
     "pandoc-3.1.8-r0.apk"
-    "tesseract-5.3.2-r0.apk"
     "nltk_data.tgz"
   )
 fi
