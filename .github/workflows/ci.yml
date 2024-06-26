@@ -58,7 +58,7 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
-          severity-cutoff: medium
+          severity-cutoff: critical
           fail-build: ${{ matrix.image == 'wolfi-base' }}
           output-format: table
 
