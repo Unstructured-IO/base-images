@@ -5,10 +5,9 @@ COPY ./scripts/install-wolfi-libreoffice.sh install-wolfi-libreoffice.sh
 COPY ./scripts/install-wolfi-tesseract.sh install-wolfi-tesseract.sh
 
 USER root
-RUN apk update && apk add py3.11-pip mesa-gl glib cmake bash libmagic wget && \
+RUN apk update && apk add py3.11-pip mesa-gl glib cmake bash libmagic wget openjpeg && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
-    apk add --allow-untrusted packages/leptonica-1.83.0-r0.apk && \
     ./install-wolfi-tesseract.sh && rm install-wolfi-tesseract.sh && \
     ./install-wolfi-libreoffice.sh && rm install-wolfi-libreoffice.sh && \
     apk cache clean && \
