@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         architecture: ["arm64", "amd64"]
-        image: ["wolfi-base", "rocky9.2-10-gpu", "rocky9.2-10-slim", "rocky9.2-10-cpu"]
+        image: ["wolfi-base", "rocky9.2-gpu", "rocky9.2-slim", "rocky9.2-cpu"]
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
@@ -65,7 +65,7 @@ jobs:
   publish-images:
     strategy:
       matrix:
-        image: ["wolfi-base", "rocky9.2-10-gpu","rocky9.2-10-slim", "rocky9.2-10-cpu" ]
+        image: ["wolfi-base", "rocky9.2-gpu","rocky9.2-slim", "rocky9.2-cpu" ]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
@@ -91,22 +91,18 @@ jobs:
         docker pull --platform linux/arm64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
         docker tag $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64-$SHORT_SHA $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
         docker push $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
-    - name: Push multiarch manifest
-      run: |
-        if [[ ${{ matrix.image }} == 'wolfi-base' ]]; then
-          export IMAGE_TAG=${{ matrix.image }}-$SHORT_SHA
-        else
-          export IMAGE_TAG=${{ matrix.image }}
-        fi
-        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
-        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG}
-    - name: Push latest manifest for wolfi base
-      if: ${{ matrix.image }} == 'wolfi-base'
-      run: |
-        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
-        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG}
+    - name: Push multiarch manifest with short SHA
       env:
-        IMAGE_TAG: wolfi-base-latest
+        IMAGE_TAG: ${{ matrix.image }}-$SHORT_SHA
+      run: |
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
+        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG}
+    - name: Update latest multiarch manifest
+      env:
+        IMAGE_TAG: ${{ matrix.image }}-latest
+      run: |
+        docker manifest create $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG} $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-amd64 $DOCKER_BUILD_REPOSITORY:${{ matrix.image }}-arm64
+        docker manifest push $DOCKER_REPOSITORY/$DOCKER_IMAGE:${IMAGE_TAG}
 
   shellcheck:
     runs-on: ubuntu-latest
