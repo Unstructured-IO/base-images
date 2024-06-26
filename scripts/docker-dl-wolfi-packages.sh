@@ -11,7 +11,6 @@ if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   )
 else
   files=(
-    "libreoffice-7.6.5-r0.apk"
     "openjpeg-2.5.0-r0.apk"
     "poppler-23.09.0-r0.apk"
     "leptonica-1.83.0-r0.apk"
