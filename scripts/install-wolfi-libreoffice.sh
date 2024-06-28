@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RCH=$(uname -m)
+ARCH=$(uname -m)
 
 if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
   apk add --allow-untrusted packages/libreoffice-7.6.5-r0.apk
