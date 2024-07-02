@@ -5,6 +5,7 @@ package:
   target-architecture:
     - x86_64
     - aarch64
+  epoch: 2
   copyright:
     - license: Mozilla Public License v2.0
       paths:
@@ -100,7 +101,7 @@ pipeline:
       expected-sha256: 75d052ee101aca0d75cd5cb2998e2f705c0089c6acaa263b696e45f8c95e3b95
   - runs: |
       mkdir $HOME/local
-      mkdir -p ${{targets.destdir}}/usr/local/lib/
+      mkdir -p /usr/local/lib/
       ./autogen.sh \
       --prefix=$HOME/local \
       --enable-release-build=yes \
@@ -120,6 +121,5 @@ pipeline:
       --without-system-nss && \
       make -j$(nproc) && \
       make install
-  - runs: |
-      mkdir -p ${{targets.destdir}}/usr/local/lib/
-      cp -R $HOME/local/ ${{targets.destdir}}
+      mkdir -p /usr/local/lib/
+      cp -R $HOME/local/ /usr/local/lib
