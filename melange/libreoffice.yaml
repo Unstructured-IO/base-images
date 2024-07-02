@@ -1,6 +1,6 @@
 package:
   name: libreoffice
-  version: 7.5.4
+  version: 7.6.7.2
   description: Libreoffice compiled package for Wolfi based distros
   target-architecture:
     - x86_64
@@ -21,7 +21,7 @@ environment:
       - wolfi-base
       - ca-certificates
       - gcc
-      - pandoc
+      - pandoc@local
       - openjpeg
       - gcc-6
       - bash
@@ -96,8 +96,8 @@ environment:
 pipeline:
   - uses: fetch
     with:
-      uri: https://download.documentfoundation.org/libreoffice/src/7.5.4/libreoffice-7.5.4.2.tar.xz
-      expected-sha256: 68bbd1b79ffa4c33ed80f25520b9e6d69e3be23c9b4a0f0c9d859cc9a24865e8
+      uri: https://download.documentfoundation.org/libreoffice/src/7.6.7/libreoffice-7.6.7.2.tar.xz
+      expected-sha256: 75d052ee101aca0d75cd5cb2998e2f705c0089c6acaa263b696e45f8c95e3b95
   - runs: |
       mkdir $HOME/local
       mkdir -p ${{targets.destdir}}/usr/local/lib/
