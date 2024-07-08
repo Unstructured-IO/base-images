@@ -1,6 +1,13 @@
 #!/bin/bash
 
-apk add --allow-untrusted packages/libreoffice-7.6.7.2-r0.apk
+ARCH=$(uname -m)
+
+if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
+  apk add --allow-untrusted packages/libreoffice-24-24.2.3.2-r1.apk
+else
+  apk add libreoffice
+fi
+
 ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/libreoffice
 ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/soffice
 chmod +x /usr/lib/libreoffice/program/soffice.bin

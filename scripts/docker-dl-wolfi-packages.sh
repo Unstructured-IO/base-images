@@ -11,7 +11,7 @@ else
   files=(
     "poppler-23.09.0-r0.apk"
     "pandoc-3.1.8-r0.apk"
-    "libreoffice-7.6.7.2-r0.apk"
+    "libreoffice-24-24.2.3.2-r1.apk"
     "nltk_data.tgz"
   )
 fi
