@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ARCH=$(uname -m)
-
 apk add --allow-untrusted packages/libreoffice-24-24.2.3.2-r1.apk
 
 ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/libreoffice
