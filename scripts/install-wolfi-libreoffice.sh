@@ -2,11 +2,7 @@
 
 ARCH=$(uname -m)
 
-if [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
-  apk add --allow-untrusted packages/libreoffice-24-24.2.3.2-r1.apk
-else
-  apk add libreoffice
-fi
+apk add --allow-untrusted packages/libreoffice-24-24.2.3.2-r1.apk
 
 ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/libreoffice
 ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/soffice
