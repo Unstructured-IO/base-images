@@ -59,7 +59,7 @@ jobs:
         with:
           image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
           severity-cutoff: high
-          fail-build: ${{ matrix.image == 'wolfi-base' || matrix.image == "wolfi-py3.12-slim" }}
+          fail-build: ${{ matrix.image == 'wolfi-base' || matrix.image == 'wolfi-py3.12-slim' }}
           output-format: table
 
   publish-images:
