@@ -126,6 +126,7 @@ pipeline:
       --with-jdk-home=$JAVA_HOME
       --enable-python=system
       --enable-split-debug
+      --disable-libcmis
       --prefix=/usr
       --with-system-argon2
       --with-system-libcmis
