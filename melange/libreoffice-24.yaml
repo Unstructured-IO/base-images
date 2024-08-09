@@ -19,7 +19,6 @@ package:
       - freetype
       - glib
       - gpgme
-      - libcmis-dev
       - libcurl-openssl4
       - libfontconfig1
       - liblangtag
@@ -79,6 +78,7 @@ environment:
       - liblangtag-dev
       - libnspr-dev
       - libnss-dev
+      - libpsl-dev
       - libsm-dev
       - libtool
       - libx11-dev
@@ -97,6 +97,7 @@ environment:
       - mesa-egl
       - mesa-gl
       - nasm
+      - nghttp2-dev
       - openjdk-17
       - openjdk-17-default-jvm
       - openssl-dev
@@ -109,6 +110,9 @@ environment:
       - python-3.11
       - python-3.11-dev
       - zip
+  environment:
+    JAVA_HOME: /usr/lib/jvm/java-17-openjdk
+
 
 pipeline:
   - uses: git-checkout
@@ -119,11 +123,12 @@ pipeline:
 
   - runs: |
       cat > autogen.input <<EOF
+      --with-jdk-home=$JAVA_HOME
       --enable-python=system
       --enable-split-debug
       --prefix=/usr
       --with-system-argon2
-      # --with-system-libcmis
+      --with-system-libcmis
       --with-system-expat
       --with-system-gpgmepp
       --with-system-liblangtag
@@ -131,7 +136,7 @@ pipeline:
       --with-system-cairo
       --with-system-zlib
       --with-system-boost
-      # --with-system-curl
+      --with-system-curl
       --disable-gui
       --disable-cups
       --disable-lotuswordpro
@@ -170,6 +175,7 @@ update:
     identifier: LibreOffice/core
     use-tag: true
     strip-prefix: libreoffice-
+    tag-filter-prefix: libreoffice-24
 
 test:
   environment:
