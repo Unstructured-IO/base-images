@@ -1,6 +1,6 @@
 package:
   name: libreoffice-24
-  version: 24.2.3.2
+  version: 24.2.5.2
   epoch: 1
   description:
   # https://www.libreoffice.org/about-us/licenses
@@ -19,6 +19,7 @@ package:
       - freetype
       - glib
       - gpgme
+      - libcmis-dev
       - libcurl-openssl4
       - libfontconfig1
       - liblangtag
@@ -114,7 +115,7 @@ pipeline:
     with:
       repository: https://github.com/LibreOffice/core
       tag: libreoffice-${{package.version}}
-      expected-commit: 433d9c2ded56988e8a90e6b2e771ee4e6a5ab2ba
+      expected-commit: bffef4ea93e59bebbeaf7f431bb02b1a39ee8a59
 
   - runs: |
       cat > autogen.input <<EOF
@@ -122,7 +123,7 @@ pipeline:
       --enable-split-debug
       --prefix=/usr
       --with-system-argon2
-      --with-system-libcmis
+      # --with-system-libcmis
       --with-system-expat
       --with-system-gpgmepp
       --with-system-liblangtag
@@ -130,7 +131,7 @@ pipeline:
       --with-system-cairo
       --with-system-zlib
       --with-system-boost
-      --with-system-curl
+      # --with-system-curl
       --disable-gui
       --disable-cups
       --disable-lotuswordpro
