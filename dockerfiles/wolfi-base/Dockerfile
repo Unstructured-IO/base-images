@@ -6,7 +6,6 @@ COPY ./scripts/install-wolfi-tesseract.sh install-wolfi-tesseract.sh
 
 USER root
 RUN apk update && \
-    apk del python-3.12 && \
     apk add py3.11-pip mesa-gl glib cmake bash libmagic wget git openjpeg && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
