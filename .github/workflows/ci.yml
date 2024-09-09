@@ -25,8 +25,8 @@ jobs:
     strategy:
       matrix:
         architecture: ["arm64", "amd64"]
-        # NOTE(robinson) - temporarily disabled rocky9.2-gpu
-        image: ["wolfi-base", "wolfi-py3.12-slim", "rocky9.2-slim", "rocky9.2-cpu"]
+        # NOTE(robinson) - temporarily disabled rocky due to build failures
+        image: ["wolfi-base", "wolfi-py3.12-slim"] # ["rocky9.2-gpu", "rocky9.2-slim", "rocky9.2-cpu"]
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
