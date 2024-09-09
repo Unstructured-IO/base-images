@@ -66,7 +66,8 @@ jobs:
   publish-images:
     strategy:
       matrix:
-        image: ["wolfi-base", "wolfi-py3.12-slim", "rocky9.2-gpu","rocky9.2-slim", "rocky9.2-cpu" ]
+        # NOTE(robinson) - temporarily disabled rocky due to build failures
+        image: ["wolfi-base", "wolfi-py3.12-slim"] # "rocky9.2-gpu","rocky9.2-slim", "rocky9.2-cpu" ]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
