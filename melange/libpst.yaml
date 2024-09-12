@@ -1,0 +1,60 @@
+package:
+  name: libpst
+  version: 0.6.76
+  description: library for reading Microsoft Outlook PST files
+  target-architecture:
+    - x86_64
+  copyright:
+    - license: GPL-2.0
+      paths:
+        - "*"
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - autoconf
+      - automake
+      - bash
+      - boost-dev
+      - build-base
+      - ca-certificates
+      - coreutils
+      - cmake
+      - gcc
+      - gcc-6
+      - gettext-dev
+      - gnutar
+      - gobject-introspection-dev
+      - glib-dev
+      - gzip
+      - libgsf-dev
+      - libtool
+      - libxml2-dev
+      - make
+      - pkgconf-dev
+      - wolfi-base
+
+pipeline:
+  - uses: fetch
+    with:
+      uri: https://github.com/pst-format/libpst/archive/refs/tags/libpst-${{package.version}}.tar.gz
+      expected-sha256: 2ed22fcb8c3f9b99ab131231149b4f0958730b5f265b423c26a4b43f36344dcc
+  - runs: |
+      tar -xzf libpst-${{package.version}}.tar.gz
+      cd libpst-libpst-${{package.version}}
+
+      mkdir -p ${{targets.destdir}}/usr/local
+
+      # NOTE(robinson) - the files for the man pages were missing. Here we're just creating
+      # dummy man page files to enable the build to succeed.
+      touch man/readpst.1 man/pst2ldif.1 man/lspst.1 man/outlook.pst.5 man/pst2dii.1
+
+      autoreconf -fi
+      /bin/bash configure --enable-python=no
+      make
+      su
+      make install DESTDIR="${{targets.destdir}}"
