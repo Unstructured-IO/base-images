@@ -7,13 +7,13 @@
 
 if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   files=(
-    "mesa-gl-24.1.0-r0.718c913d.apk"
-    "mesa-glapi-24.1.0-r0.4390a503.apk"
+    "mesa-gl-24.1-aarch64.0-r0.apk"
+    "mesa-glapi-24.1.0-r0-aarch64.apk"
   )
 else
   files=(
-    "mesa-gl-24.1-aarch64.0-r0.apk"
-    "mesa-glapi-24.1.0-r0-aarch64.apk"
+    "mesa-gl-24.1.0-r0.718c913d.apk"
+    "mesa-glapi-24.1.0-r0.4390a503.apk"
   )
 fi
 
