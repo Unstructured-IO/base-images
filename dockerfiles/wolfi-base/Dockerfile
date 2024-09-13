@@ -9,12 +9,7 @@ USER root
 # libgallum is missing in mesa-gl 24.2.0 from the wolfi package manager
 RUN apk update && \
     apk add py3.11-pip glib cmake bash libmagic wget git openjpeg && \
-    wget "https://utic-public-cf.s3.amazonaws.com/mesa-gl-24.1.0-r0.718c913d.apk" && \
-    wget "https://utic-public-cf.s3.amazonaws.com/mesa-glapi-24.1.0-r0.4390a503.apk" && \
-    apk add --allow-untrusted mesa-gl-24.1.0-r0.718c913d.apk && \
-    apk add --allow-untrusted mesa-glapi-24.1.0-r0.4390a503.apk && \
-    rm mesa-gl-24.1.0-r0.718c913d.apk && \
-    rm mesa-glapi-24.1.0-r0.4390a503.apk && \
+    ./install-wolfi-mesa-gl.sh && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
     ./install-wolfi-tesseract.sh && rm install-wolfi-tesseract.sh && \
