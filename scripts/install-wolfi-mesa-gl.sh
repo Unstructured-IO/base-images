@@ -5,6 +5,8 @@
 # is required for the build to work. We can drop this work around as soon as mesa-gl
 # is fixed upstream.
 
+ARCH=$(uname -m)
+
 if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   files=(
     "mesa-gl-24.1-aarch64.0-r0.apk"

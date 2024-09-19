@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ARCH=$(uname -m)
+
 if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   files=(
     "poppler-23.09.0-r0-aarch64.apk"
