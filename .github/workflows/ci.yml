@@ -25,8 +25,7 @@ jobs:
     strategy:
       matrix:
         architecture: ["arm64", "amd64"]
-        # NOTE(robinson) - temporarily disabled rocky due to build failures
-        image: ["wolfi-base", "wolfi-py3.12-slim"] # ["rocky9.2-gpu", "rocky9.2-slim", "rocky9.2-cpu"]
+        image: ["wolfi-base", "wolfi-py3.12-slim", "rocky9.2-gpu", "rocky9.2-slim", "rocky9.2-cpu"]
     runs-on: ubuntu-latest-m
     needs: [set-short-sha]
     env:
@@ -66,8 +65,7 @@ jobs:
   publish-images:
     strategy:
       matrix:
-        # NOTE(robinson) - temporarily disabled rocky due to build failures
-        image: ["wolfi-base", "wolfi-py3.12-slim"] # "rocky9.2-gpu","rocky9.2-slim", "rocky9.2-cpu" ]
+        image: ["wolfi-base", "wolfi-py3.12-slim", "rocky9.2-gpu","rocky9.2-slim", "rocky9.2-cpu" ]
     env:
       SHORT_SHA: ${{ needs.set-short-sha.outputs.short_sha }}
     runs-on: ubuntu-latest
