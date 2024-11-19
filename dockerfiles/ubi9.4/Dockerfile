@@ -14,5 +14,7 @@ RUN --mount=type=secret,id=redhat_pw,uid=0 \
   GPU_ENABLED=false /deps/base.sh  && \
   /deps/tesseract.sh && \
   /deps/python.sh && \
+  mkdir /license  && \
+  mv /deps/LICENSE.md /license && \
   rm -r /deps && \
   rm /etc/pki/entitlement/*.pem
