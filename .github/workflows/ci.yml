@@ -46,12 +46,22 @@ jobs:
           ARCH: ${{ matrix.architecture }}
         if: matrix.image == 'wolfi-base'
         run: make docker-dl-wolfi-packages
-      - name: Build base images
+      - name: Build non-base images
+        if: ${{ matrix.image != 'ubi9.4' }}
         run: make build-base-images
         env:
           DOCKER_PLATFORM: linux/${{ matrix.architecture }}
           DOCKERFILE: ${{ matrix.image }}
           CI: "true"
+      - name: Build UBI 9.4 base images
+        if: ${{ matrix.image == 'ubi9.4' }}
+        run: make build-base-images
+        env:
+          DOCKER_PLATFORM: linux/${{ matrix.architecture }}
+          DOCKERFILE: ${{ matrix.image }}
+          CI: "true"
+          REDHAT_PW: ${{ secrets.REDHAT_PW }}
+          REDHAT_USER: ${{ secrets.REDHAT_USER }}
       - name: Print images
         run: docker images
       - name: Scan image for vulnerabilities
