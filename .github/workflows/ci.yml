@@ -46,7 +46,7 @@ jobs:
           ARCH: ${{ matrix.architecture }}
         if: matrix.image == 'wolfi-base'
         run: make docker-dl-wolfi-packages
-      - name: Build non-base images
+      - name: Build non-ubi images
         if: ${{ matrix.image != 'ubi9.4' }}
         run: make build-base-images
         env:

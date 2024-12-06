@@ -33,13 +33,29 @@ fi
 
 if [ "$DOCKERFILE" == "ubi9.4" ]; then
   # shellcheck disable=SC2206,SC2054
+  VERSION="1.0.0"
+  BUILD_DATE=$(date +%Y%m%d)
+  RELEASE="$VERSION-$SHORT_SHA-$BUILD_DATE"
+
   DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
     --build-arg PIP_VERSION="$PIP_VERSION"
     --build-arg BUILDKIT_INLINE_CACHE=1
     --secret id=redhat_pw,env=REDHAT_PW
     --secret id=redhat_user,env=REDHAT_USER
+    --label "name=unstructured-io/ubi-base"
+    --label "vendor=unstructured-io"
+    --label "version=$VERSION"
+    --label "release=$RELEASE"
+    --label "commit=$SHORT_SHA"
+    --label "build-date=$BUILD_DATE"
+    --label "summary=Base UBI 9.4 image for the Unstructured API."
+    --label "description=Base UBI 9.4 image with the required dependencies and configurations for building the Unstructured API."
     --progress plain
-    -t "$DOCKER_IMAGE-$SHORT_SHA" -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
+    -t "$DOCKER_IMAGE:$RELEASE"
+    -t "$DOCKER_IMAGE:$VERSION"
+    -t "$DOCKER_IMAGE:$SHORT_SHA"
+    -t "$DOCKER_IMAGE:latest"
+    -f "./dockerfiles/$DOCKERFILE/Dockerfile" .)
 else
   # shellcheck disable=SC2206
   DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
