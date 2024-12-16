@@ -6,6 +6,7 @@ on:
     - cron: '0 0 * * *'
 
 permissions:
+  contents: read
   id-token: write
 
 jobs:
@@ -15,7 +16,7 @@ jobs:
     steps:
       - uses: chainguard-dev/setup-chainctl@main
         with:
-          identity: ${{ secrets.CHAINGUARD_IDENTITY }}
+          identity: ${{ secrets.CHAINGUARD_IDENTITY_DEBUG }}
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
