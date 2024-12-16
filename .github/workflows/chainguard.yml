@@ -27,6 +27,6 @@ jobs:
       # TODO make this a matrix job
       - name: Pull and push chainguardpython image
         run: |
-          docker pull cgr.dev/chainguard/python:latest-3.12
-          docker tag cgr.dev/chainguard/python:latest-3.12 uticplatform.azurecr.io/chainguard/python:latest-3.12
-          docker push uticplatform.azurecr.io/chainguard/python:latest-3.12
+          docker pull cgr.dev/chainguard/python:3.12
+          docker tag cgr.dev/chainguard/python:3.12 uticplatform.azurecr.io/chainguard/python:3.12
+          docker push uticplatform.azurecr.io/chainguard/python:3.12
