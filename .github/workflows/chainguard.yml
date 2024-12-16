@@ -1,0 +1,32 @@
+name: Chainguard Image Updates
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  id-token: write
+
+jobs:
+  pull-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: chainguard-dev/setup-chainctl@main
+        with:
+          identity: ${{ secrets.CHAINGUARD_IDENTITY }}
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: uticplatform.azurecr.io
+          username: ${{ secrets.PLATFORM_ACR_USERNAME }}
+          password: ${{ secrets.PLATFORM_ACR_PASSWORD }}
+
+      # TODO make this a matrix job
+      - name: Pull and push chainguardpython image
+        run: |
+          docker pull cgr.dev/chainguard/python:latest-3.12
+          docker tag cgr.dev/chainguard/python:latest-3.12 uticplatform.azurecr.io/chainguard/python:latest-3.12
+          docker push uticplatform.azurecr.io/chainguard/python:latest-3.12
