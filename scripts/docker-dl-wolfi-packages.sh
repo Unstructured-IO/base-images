@@ -21,7 +21,7 @@ mkdir -p "${directory}"
 
 for file in "${files[@]}"; do
   echo "Downloading ${file}"
-  wget "https://utic-public-cf.s3.amazonaws.com/$file" -P "$directory"
+  aws s3 cp "s3://utic-public-cf/$file" "$directory/"
 done
 
 # NOTE(robinson) - renames the aarch64 specific APKs to replace -aarch.apk with .apk
