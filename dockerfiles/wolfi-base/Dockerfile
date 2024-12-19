@@ -7,7 +7,8 @@ COPY ./scripts/install-wolfi-mesa-gl.sh install-wolfi-mesa-gl.sh
 
 USER root
 RUN apk update && \
-    apk add python-3.11=3.11.11-r0 python-3.11-base=3.11.11-r0 py3.11-pip=24.3.1-r1 glib mesa-gl mesa-libgallium cmake bash libmagic wget git openjpeg && \
+    apk add python-3.11=3.11.11-r0 python-3.11-base=3.11.11-r0 py3.11-pip=24.3.1-r1 glib \
+      mesa-gl mesa-libgallium cmake bash libmagic wget git openjpeg && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
     ./install-wolfi-tesseract.sh && rm install-wolfi-tesseract.sh && \
