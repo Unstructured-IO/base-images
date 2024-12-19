@@ -6,11 +6,9 @@ COPY ./scripts/install-wolfi-tesseract.sh install-wolfi-tesseract.sh
 COPY ./scripts/install-wolfi-mesa-gl.sh install-wolfi-mesa-gl.sh
 
 USER root
-# NOTE(robinson) - the mesa-gl section is a temporary workaround to install mesa-gl 24.1.0 because
-# libgallum is missing in mesa-gl 24.2.0 from the wolfi package manager
 RUN apk update && \
-    apk add py3.11-pip glib cmake bash libmagic wget git openjpeg && \
-    ./install-wolfi-mesa-gl.sh && rm install-wolfi-mesa-gl.sh && \
+    apk add python-3.11 python-3.11-base py3.11-pip glib \
+      mesa-gl mesa-libgallium cmake bash libmagic wget git openjpeg && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     apk add --allow-untrusted packages/poppler-23.09.0-r0.apk && \
     ./install-wolfi-tesseract.sh && rm install-wolfi-tesseract.sh && \
