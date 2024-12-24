@@ -6,6 +6,7 @@ on:
     - cron: '0 0 * * *'
 
 permissions:
+  contents: read
   id-token: write
 
 jobs:
@@ -15,7 +16,11 @@ jobs:
     steps:
       - uses: chainguard-dev/setup-chainctl@main
         with:
-          identity: ${{ secrets.CHAINGUARD_IDENTITY }}
+          identity: ${{ secrets.CHAINGUARD_IDENTITY_DEBUG }}
+
+      - name: Pull the latest chainguard python image
+        run: |
+          docker pull cgr.dev/unstructured.io/python:3.12
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
@@ -25,8 +30,7 @@ jobs:
           password: ${{ secrets.PLATFORM_ACR_PASSWORD }}
 
       # TODO make this a matrix job
-      - name: Pull and push chainguardpython image
+      - name: Pull and push chainguard python image
         run: |
-          docker pull cgr.dev/unstructured.io/python:3.12
           docker tag cgr.dev/unstructured.io/python:3.12 uticplatform.azurecr.io/chainguard/python:3.12
           docker push uticplatform.azurecr.io/chainguard/python:3.12
