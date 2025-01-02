@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: chainguard-dev/setup-chainctl@main
         with:
-          identity: ${{ secrets.CHAINGUARD_IDENTITY_DEBUG }}
+          identity: ${{ secrets.CHAINGUARD_IDENTITY }}
 
       - name: Pull the latest chainguard python image
         run: |
