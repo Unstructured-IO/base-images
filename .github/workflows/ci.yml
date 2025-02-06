@@ -29,6 +29,10 @@ jobs:
           [
             "wolfi-base",
             "wolfi-py3.12-slim",
+<<<<<<< HEAD
+=======
+            "wolfi-py3.13-slim",
+>>>>>>> d704ecd5b562536a35b26e3b6f7c35cf05dec78c
             "rocky9.2-slim",
             "rocky9.2-cpu",
             "rocky9.2-gpu",
@@ -70,7 +74,7 @@ jobs:
         with:
           image: "${{ env.DOCKER_BUILD_REPOSITORY }}:${{ matrix.image }}-${{ matrix.architecture }}-${{ env.SHORT_SHA }}"
           severity-cutoff: high
-          fail-build: ${{ ( matrix.image == 'wolfi-base' || matrix.image == 'wolfi-py3.12-slim' ) }}
+          fail-build: ${{ ( matrix.image == 'wolfi-base' || matrix.image == 'wolfi-py3.12-slim' || matrix.image == 'wolfi-py3.13-slim' ) }}
           output-format: table
 
   publish-images:
@@ -80,6 +84,10 @@ jobs:
           [
             "wolfi-base",
             "wolfi-py3.12-slim",
+<<<<<<< HEAD
+=======
+            "wolfi-py3.13-slim",
+>>>>>>> d704ecd5b562536a35b26e3b6f7c35cf05dec78c
             "rocky9.2-slim",
             "rocky9.2-cpu",
             "rocky9.2-gpu",
