@@ -29,10 +29,6 @@ jobs:
           [
             "wolfi-base",
             "wolfi-py3.12-slim",
-<<<<<<< HEAD
-=======
-            "wolfi-py3.13-slim",
->>>>>>> d704ecd5b562536a35b26e3b6f7c35cf05dec78c
             "rocky9.2-slim",
             "rocky9.2-cpu",
             "rocky9.2-gpu",
@@ -84,10 +80,6 @@ jobs:
           [
             "wolfi-base",
             "wolfi-py3.12-slim",
-<<<<<<< HEAD
-=======
-            "wolfi-py3.13-slim",
->>>>>>> d704ecd5b562536a35b26e3b6f7c35cf05dec78c
             "rocky9.2-slim",
             "rocky9.2-cpu",
             "rocky9.2-gpu",
