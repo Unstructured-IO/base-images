@@ -3,7 +3,6 @@ FROM cgr.dev/chainguard/wolfi-base:latest
 COPY ./docker-packages/*.apk packages/
 COPY ./scripts/install-wolfi-libreoffice.sh install-wolfi-libreoffice.sh
 COPY ./scripts/install-wolfi-tesseract.sh install-wolfi-tesseract.sh
-COPY ./scripts/install-wolfi-mesa-gl.sh install-wolfi-mesa-gl.sh
 
 USER root
 RUN apk update && \
