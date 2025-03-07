@@ -6,7 +6,8 @@ BUILD_REPO="${BUILD_REPO:-build-base-images}"
 PIP_VERSION="${PIP_VERSION:-22.2.1}"
 GITHUB_REF="${GITHUB_REF:-none}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
-DOCKERFILE="${DOCKERFILE:-wolfi-base}"
+DOCKERFILE="${DOCKERFILE:-ubi9.4}"
+#DOCKERFILE="${DOCKERFILE:-wolfi-base}"
 CI="${CI:-false}"
 SHORT_SHA="${SHORT_SHA:-$(git rev-parse --short HEAD)}"
 
@@ -31,7 +32,7 @@ if [ "$CI" == "false" ]; then
   BUILDX_COMMAND+=("--load")
 fi
 
-if [ "$DOCKERFILE" == "ubi9.4" ]; then
+if [ "$DOCKERFILE" == "ubi8.8" ]; then
   # shellcheck disable=SC2206,SC2054
   DOCKER_BUILD_CMD=("${BUILDX_COMMAND[@]}"
     --build-arg PIP_VERSION="$PIP_VERSION"
