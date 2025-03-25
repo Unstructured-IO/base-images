@@ -31,7 +31,9 @@ jobs:
             "wolfi-py3.12-slim",
             "rocky9.2-slim",
             "rocky9.2-cpu",
-            "rocky9.2-gpu",
+        #            "rocky9.2-gpu", [TODO] Resolve 
+        #            1005.6 Error: Failed to download metadata for repo 'cuda-rhel9-x86_64': Yum repo downloading error: Downloading error(s):
+        #            Cannot download, all mirrors were already tried without success;
           ]
     runs-on: ${{ matrix.architecture == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-latest-m' }}
     needs: [set-short-sha]
