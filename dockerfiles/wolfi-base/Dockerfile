@@ -5,8 +5,9 @@ COPY ./scripts/install-wolfi-libreoffice.sh install-wolfi-libreoffice.sh
 COPY ./scripts/install-wolfi-tesseract.sh install-wolfi-tesseract.sh
 
 USER root
+# Pin libxml2 to avoid a dependency issue with libreoffice
 RUN apk update && \
-    apk add python-3.12 python-3.12-base py3.12-pip glib \
+    apk add libxml2 python-3.12 python-3.12-base py3.12-pip glib \
       mesa-gl mesa-libgallium cmake bash libmagic wget git openjpeg \
       poppler libreoffice && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
