@@ -7,14 +7,16 @@ COPY ./scripts/install-wolfi-tesseract.sh install-wolfi-tesseract.sh
 USER root
 # Pin libxml2 to avoid a dependency issue with libreoffice
 RUN apk update && \
-    apk add libxml2=2.13.6-r3 python-3.11 python-3.11-base py3.11-pip glib \
+    apk add libxml2 python-3.12 python-3.12-base py3.12-pip glib \
       mesa-gl mesa-libgallium cmake bash libmagic wget git openjpeg \
-      poppler && \
+      poppler libreoffice && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     ./install-wolfi-tesseract.sh && rm install-wolfi-tesseract.sh && \
-    ./install-wolfi-libreoffice.sh && rm install-wolfi-libreoffice.sh && \
     apk cache clean && \
-    rm -rf packages
+    rm -rf packages && \
+    ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/libreoffice && \
+    ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/soffice && \
+    chmod +x /usr/lib/libreoffice/program/soffice.bin
 
 ARG NB_UID=1000
 ARG NB_USER=notebook-user
