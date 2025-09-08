@@ -2,13 +2,11 @@
 
 if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
   files=(
-    "poppler-23.09.0-r0-aarch64.apk"
     "pandoc-3.1.8-r0-aarch64.apk"
     "nltk_data.tgz"
   )
 else
   files=(
-    "poppler-23.09.0-r0.apk"
     "pandoc-3.1.8-r0.apk"
     "nltk_data.tgz"
   )

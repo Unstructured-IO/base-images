@@ -9,7 +9,7 @@ USER root
 RUN apk update && \
     apk add libxml2 python-3.12 python-3.12-base py3.12-pip glib \
       mesa-gl mesa-libgallium cmake bash libmagic wget git openjpeg \
-      poppler libreoffice && \
+      poppler poppler-utils poppler-glib libreoffice && \
     apk add --allow-untrusted packages/pandoc-3.1.8-r0.apk && \
     ./install-wolfi-tesseract.sh && rm install-wolfi-tesseract.sh && \
     apk cache clean && \
