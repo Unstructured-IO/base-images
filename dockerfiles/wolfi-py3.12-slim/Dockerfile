@@ -6,4 +6,7 @@ RUN apk update && \
     apk add bash python-3.12 py3.12-pip && \
     apk cache clean
 
+# NOTE(alan): To resolve GHSA-58pv-8j8x-9vj2
+RUN $PIP install --no-cache-dir --user --upgrade "jaraco.context>=6.1"
+
 CMD ["/bin/bash"]
