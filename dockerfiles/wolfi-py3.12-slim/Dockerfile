@@ -7,6 +7,8 @@ RUN apk update && \
     apk cache clean
 
 # NOTE(alan): To resolve GHSA-58pv-8j8x-9vj2
-RUN pip install --no-cache-dir --upgrade "jaraco.context>=6.1"
+RUN pip uninstall -y jaraco.context && \
+    pip install --no-cache-dir --force-reinstall jaraco.context>=6.1.0 && \
+    pip verify jaraco.context
 
 CMD ["/bin/bash"]

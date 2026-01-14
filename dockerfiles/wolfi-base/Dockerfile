@@ -18,6 +18,9 @@ RUN apk update && \
     ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/soffice && \
     chmod +x /usr/lib/libreoffice/program/soffice.bin
 
+# NOTE(alan): To resolve GHSA-58pv-8j8x-9vj2
+RUN pip install --no-cache-dir --upgrade "jaraco.context>=6.1"
+
 ARG NB_UID=1000
 ARG NB_USER=notebook-user
 RUN addgroup --gid ${NB_UID} ${NB_USER} && \
@@ -29,9 +32,6 @@ COPY --chown=${NB_USER} scripts/initialize-libreoffice.sh ${HOME}/initialize-lib
 ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 USER ${NB_USER}
 WORKDIR ${HOME}
-
-# NOTE(alan): To resolve GHSA-58pv-8j8x-9vj2
-RUN pip install --no-cache-dir --upgrade "jaraco.context>=6.1"
 
 # NOTE(mike): This dummy call is a workaround for libreoffice not executing commands properly at the start of the container.
 # The issue is decribed here: https://github.com/Unstructured-IO/unstructured/issues/3105
