@@ -18,9 +18,6 @@ RUN apk update && \
     ln -s /usr/lib/libreoffice/program/soffice.bin /usr/bin/soffice && \
     chmod +x /usr/lib/libreoffice/program/soffice.bin
 
-# NOTE(alan): To resolve GHSA-58pv-8j8x-9vj2
-RUN pip install --no-cache-dir --upgrade "jaraco.context>=6.1"
-
 ARG NB_UID=1000
 ARG NB_USER=notebook-user
 RUN addgroup --gid ${NB_UID} ${NB_USER} && \
@@ -39,5 +36,11 @@ WORKDIR ${HOME}
 # It is crucial to run as a non-root user, otherwise the config file will be created in /root
 # Moreover, we expect the command to exit with code 81
 RUN ./initialize-libreoffice.sh && rm initialize-libreoffice.sh
+
+USER root
+
+RUN pip uninstall -y setuptools && pip cache purge
+
+USER ${NB_USER}
 
 CMD ["/bin/bash"]
