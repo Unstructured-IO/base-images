@@ -30,6 +30,9 @@ ENV TESSDATA_PREFIX=/usr/local/share/tessdata
 USER ${NB_USER}
 WORKDIR ${HOME}
 
+# NOTE(alan): To resolve GHSA-58pv-8j8x-9vj2
+RUN $PIP install --no-cache-dir --user --upgrade "jaraco.context>=6.1"
+
 # NOTE(mike): This dummy call is a workaround for libreoffice not executing commands properly at the start of the container.
 # The issue is decribed here: https://github.com/Unstructured-IO/unstructured/issues/3105
 # soffice running twice explanation: https://github.com/jodconverter/jodconverter/issues/48#issuecomment-1863864333
